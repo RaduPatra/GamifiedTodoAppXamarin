@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="XamarinTodoApp.Views.TodoListPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:XamarinTodoApp.ViewModels"
+    xmlns:model="clr-namespace:XamarinTodoApp.Models"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Name="BrowseTodoPage"
+    Title="{Binding Title}"
+    x:DataType="local:TodoListViewModel">
+
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding AddItemCommand}" Text="Add" />
+        <ToolbarItem Command="{Binding TestCommand}" Text="AddTest" />
+    </ContentPage.ToolbarItems>
+
+
+    <!--<ContentPage.BindingContext>
+        <local:TodoListViewModel />
+    </ContentPage.BindingContext>-->
+
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:ItemSelectedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <StackLayout>
+        <Label Text="Coins:" VerticalOptions="Center" />
+
+        <Label Text="{Binding Coins, Mode=TwoWay}" VerticalOptions="Center" />
+
+        <RefreshView
+            x:DataType="local:TodoListViewModel"
+            Command="{Binding LoadItemsCommand}"
+            IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+
+            <CollectionView
+                x:Name="TodoListView"
+                ItemsSource="{Binding Items}"
+                SelectionMode="None">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid
+                            Margin="5,5,5,5"
+                            x:DataType="model:TodoItem"
+                            RowSpacing="1">
+
+                            <Grid.RowDefinitions Height="20">
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="30" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--<BoxView
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Color="Green" />-->
+                            <CheckBox
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                HorizontalOptions="Center"
+                                IsChecked="{Binding IsDone}"
+                                VerticalOptions="Center">
+
+
+                                <!--  CheckedChanged="CheckBox_CheckedChanged"  -->
+                                <!--
+                                    Command="{Binding BindingContext.CheckedCommand, Source={x:Reference BrowseTodoPage}}"
+                                    CommandParameter="{Binding .}"
+                                -->
+                                <CheckBox.Behaviors>
+                                    <xct:EventToCommandBehavior
+                                        Command="{Binding BindingContext.CheckedCommand, Source={x:Reference BrowseTodoPage}}"
+                                        CommandParameter="{Binding .}"
+                                        EventName="CheckedChanged" />
+
+                                </CheckBox.Behaviors>
+
+                            </CheckBox>
+
+                            <!--<BoxView
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Color="Blue" />-->
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Padding="10,10,10,10"
+                                FontSize="18"
+                                Text="{Binding Text}"
+                                VerticalOptions="Center" />
+
+                            <!--<BoxView
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Color="red" />-->
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Padding="10,5,5,5"
+                                FontSize="14"
+                                Text="{Binding Reward}"
+                                VerticalOptions="Center" />
+
+
+                        </Grid>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </StackLayout>
+</ContentPage>
+
+
+
+
+
+
+
+
+<!--
+    1 - make list item with gridview
+    that has a checkbox, and reward and name text
+    
+    when checkbox is clicked set isdone to !isdone and strikethrough name text
+    
+    2 - add the item to the listview and link the commands
+    
+    3 - when checkbox is clicked add reward to user data cons in database
+-->

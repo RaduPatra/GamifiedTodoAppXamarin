@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinTodoApp.Views.PersonPage"
+             xmlns:chart="clr-namespace:Syncfusion.SfChart.XForms;assembly=Syncfusion.SfChart.XForms">
+    <chart:SfChart>
+        <chart:SfChart.Title>
+            <chart:ChartTitle Text="Chart" />
+        </chart:SfChart.Title>
+        <chart:SfChart.PrimaryAxis>
+            <chart:NumericalAxis>
+                <chart:NumericalAxis.Title>
+                    <chart:ChartAxisTitle Text="Name" />
+                </chart:NumericalAxis.Title>
+            </chart:NumericalAxis>
+        </chart:SfChart.PrimaryAxis>
+        <chart:SfChart.SecondaryAxis>
+            <chart:NumericalAxis>
+                <chart:NumericalAxis.Title>
+                    <chart:ChartAxisTitle Text="Height" />
+                </chart:NumericalAxis.Title>
+            </chart:NumericalAxis>
+        </chart:SfChart.SecondaryAxis>
+        <chart:SfChart.Series>
+
+            <chart:ColumnSeries ItemsSource="{Binding Data}" XBindingPath="Name" YBindingPath="Height">
+
+            </chart:ColumnSeries>
+
+        </chart:SfChart.Series>
+    </chart:SfChart>
+</ContentPage>

@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "dgSpecHash": "CnkbyQv+v5OTWfWDuY/XzBsx014WsqOFqaggjxvOmQe0tCRDWjWF2DKFtesc6dDQA+fFf5J2S/ZOhsxPYgw7ww==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ASUS-ROG\\source\\repos\\XamarinTodoApp\\XamarinTodoApp\\XamarinTodoApp.iOS\\XamarinTodoApp.iOS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\firebasedatabase.net\\4.0.6\\firebasedatabase.net.4.0.6.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\litedb\\4.1.4\\litedb.4.1.4.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\refractored.mvvmhelpers\\1.6.2\\refractored.mvvmhelpers.1.6.2.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\syncfusion.licensing\\19.3.0.44\\syncfusion.licensing.19.3.0.44.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\syncfusion.xamarin.core\\19.3.0.44\\syncfusion.xamarin.core.19.3.0.44.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\syncfusion.xamarin.sfchart\\19.3.0.44\\syncfusion.xamarin.sfchart.19.3.0.44.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\system.reactive\\4.0.0\\system.reactive.4.0.0.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\system.reflection\\4.3.0\\system.reflection.4.3.0.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\system.reflection.typeextensions\\4.3.0\\system.reflection.typeextensions.4.3.0.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\system.runtime.interopservices.windowsruntime\\4.3.0\\system.runtime.interopservices.windowsruntime.4.3.0.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\xamarin.communitytoolkit\\1.2.0\\xamarin.communitytoolkit.1.2.0.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\xamarin.essentials\\1.7.0\\xamarin.essentials.1.7.0.nupkg.sha512",
+    "C:\\Users\\ASUS-ROG\\.nuget\\packages\\xamarin.forms\\5.0.0.2125\\xamarin.forms.5.0.0.2125.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1608",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package version outside of dependency constraint: Xamarin.CommunityToolkit 1.2.0 requires Xamarin.Forms (>= 5.0.0.1874 && <= 5.0.0.2012) but version Xamarin.Forms 5.0.0.2125 was resolved.",
+      "libraryId": "Xamarin.Forms",
+      "targetGraphs": [
+        "Xamarin.iOS,Version=v1.0",
+        "Xamarin.iOS,Version=v1.0/win",
+        "Xamarin.iOS,Version=v1.0/win-x64",
+        "Xamarin.iOS,Version=v1.0/win-x86"
+      ]
+    }
+  ]
+}
