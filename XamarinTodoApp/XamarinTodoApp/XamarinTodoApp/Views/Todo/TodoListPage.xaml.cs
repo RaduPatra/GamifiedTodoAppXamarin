@@ -36,12 +36,12 @@ namespace XamarinTodoApp.Views
             await _viewModel.OnDisappearing();
         }
 
-        private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        /*private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             var check = (CheckBox)sender;
             var item = (TodoItem)check.BindingContext;
             _viewModel.ExecuteCheckedTest(item);
             //Task.Run(async () => await _viewModel.ExecuteChecked(item));
-        }
+        }*/
     }
 }

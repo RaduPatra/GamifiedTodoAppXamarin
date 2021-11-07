@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,10 +6,48 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\coin.png" />
+    <None Remove="Resources\RewardIcons\archive.png" />
+    <None Remove="Resources\RewardIcons\archive2.png" />
+    <None Remove="Resources\RewardIcons\baseball.png" />
+    <None Remove="Resources\RewardIcons\book.png" />
+    <None Remove="Resources\RewardIcons\city.png" />
+    <None Remove="Resources\RewardIcons\cocktails.png" />
+    <None Remove="Resources\RewardIcons\console.png" />
+    <None Remove="Resources\RewardIcons\desert.png" />
+    <None Remove="Resources\RewardIcons\diamond.png" />
+    <None Remove="Resources\RewardIcons\gas.png" />
+    <None Remove="Resources\RewardIcons\helmet.png" />
+    <None Remove="Resources\RewardIcons\hourglass.png" />
+    <None Remove="Resources\RewardIcons\lamp.png" />
+    <None Remove="Resources\RewardIcons\lifebuoy.png" />
+    <None Remove="Resources\RewardIcons\map.png" />
+    <None Remove="Resources\RewardIcons\paper_plane.png" />
+    <None Remove="Resources\RewardIcons\polaroid.png" />
+    <None Remove="Resources\RewardIcons\poststamp.png" />
+    <None Remove="Resources\RewardIcons\recycling.png" />
+    <None Remove="Resources\RewardIcons\satelite.png" />
+    <None Remove="Resources\RewardIcons\shield.png" />
+    <None Remove="Resources\RewardIcons\smart_watch.png" />
+    <None Remove="Resources\RewardIcons\spring.png" />
+    <None Remove="Resources\RewardIcons\switch.png" />
+    <None Remove="Resources\RewardIcons\synthesizer.png" />
+    <None Remove="Resources\RewardIcons\theatre.png" />
+    <None Remove="Resources\RewardIcons\vending machine.png" />
+    <None Remove="Resources\RewardIcons\vr.png" />
+    <None Remove="Resources\RewardIcons\wine.png" />
+    <None Remove="Resources\RewardIcons\workplace.png" />
+    <None Remove="xamarintodoapp-firebase-adminsdk-8u456-629604879b.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FirebaseDatabase.net" Version="4.0.6" />
     <PackageReference Include="Google.Cloud.Firestore" Version="2.4.0" />
+    <PackageReference Include="Grpc.Core.Xamarin" Version="2.41.0" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+    <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="19.3.0.47" />
     <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="19.3.0.44" />
+    <PackageReference Include="Syncfusion.Xamarin.SfPopupLayout" Version="19.3.0.47" />
     <PackageReference Include="Xamarin.CommunityToolkit" Version="1.2.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
@@ -25,6 +63,18 @@
     <EmbeddedResource Update="Views\General\PersonPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Shop\NewRewardPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Shop\RewardInventoryPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Shop\RewardShopPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Shop\TabbedShopPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Todo\NewTodoPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -34,6 +84,40 @@
     <EmbeddedResource Update="Views\Todo\TodoListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\coin.png" />
+	  <EmbeddedResource Include="Resources\credentials.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\RewardIcons\archive.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\archive2.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\baseball.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\book.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\city.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\cocktails.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\console.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\desert.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\diamond.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\gas.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\helmet.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\hourglass.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\lamp.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\lifebuoy.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\map.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\paper_plane.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\polaroid.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\poststamp.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\recycling.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\satelite.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\shield.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\smart_watch.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\spring.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\switch.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\synthesizer.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\theatre.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\vending machine.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\vr.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\wine.png" />
+	  <EmbeddedResource Include="Resources\RewardIcons\workplace.png" />
   </ItemGroup>
 
   <ItemGroup>

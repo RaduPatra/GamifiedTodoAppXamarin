@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage
+    x:Class="XamarinTodoApp.Views.Shop.TabbedShopPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:XamarinTodoApp.Views.Shop">
+    <!--  Pages can be added as references or inline  -->
+
+    <!--<TabbedPage.ToolbarItems>
+        <ToolbarItem Name="MenuItem1" Order="Primary" Icon="Microsoft.png" Text="Item 1" Priority="0" />
+        <ToolbarItem Name="MenuItem2" Order="Primary" Icon="Xamarin.png" Text="Item 2" Priority="1" />
+    </TabbedPage.ToolbarItems>-->
+    <local:RewardShopPage Title="Reward Shop" />
+    <ContentPage Title="Inventory" />
+
+</TabbedPage>

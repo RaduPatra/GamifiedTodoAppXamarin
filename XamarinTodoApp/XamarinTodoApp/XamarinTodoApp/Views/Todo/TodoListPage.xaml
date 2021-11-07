@@ -5,10 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:XamarinTodoApp.ViewModels"
     xmlns:model="clr-namespace:XamarinTodoApp.Models"
+    xmlns:todo="clr-namespace:XamarinTodoApp.ViewModels.Todo"
     xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
     x:Name="BrowseTodoPage"
     Title="{Binding Title}"
-    x:DataType="local:TodoListViewModel">
+    x:DataType="local:TodoListViewModel"
+    BackgroundColor="WhiteSmoke">
 
 
     <ContentPage.ToolbarItems>
@@ -28,98 +30,156 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <!--<ActivityIndicator
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            HeightRequest="40"
+            IsRunning="{Binding CanCheck, Converter={xct:InvertedBoolConverter}}"
+            WidthRequest="40" />-->
+    <!--  Converter={xct:InvertedBoolConverter}  -->
+    <AbsoluteLayout>
+        <ActivityIndicator
+            AbsoluteLayout.LayoutBounds=".5,0,-1,1"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            HeightRequest="40"
+            IsRunning="{Binding IsLoading}"
+            WidthRequest="40" />
+        <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
 
-    <StackLayout>
-        <Label Text="Coins:" VerticalOptions="Center" />
+            <Label Text="{Binding Coins, Source={StaticResource userDataVM}, StringFormat='Coins: {0}'}" />
+            <Button Command="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=SortAlphabeticallyCommand}" Text="A-Z" />
 
-        <Label Text="{Binding Coins, Mode=TwoWay}" VerticalOptions="Center" />
+            <!--<Label Text="Level" />
+            <Label Text="{Binding UserDataViewModel.Level, Mode=TwoWay}" />-->
+            <Label Text="Level" />
+            <Label Text="{Binding Level, Source={StaticResource userDataVM}, Mode=TwoWay}" />
 
-        <RefreshView
-            x:DataType="local:TodoListViewModel"
-            Command="{Binding LoadItemsCommand}"
-            IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+            <Label Text="CurrentExp" />
+            <Label Text="{Binding Experience, Source={StaticResource userDataVM}, Mode=TwoWay}" />
 
-            <CollectionView
-                x:Name="TodoListView"
-                ItemsSource="{Binding Items}"
-                SelectionMode="None">
+            <Label Text="ExpToNextLvl" />
+            <Label Text="{Binding ExperienceToNextLevel, Source={StaticResource userDataVM}, Mode=TwoWay}" />
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid
-                            Margin="5,5,5,5"
-                            x:DataType="model:TodoItem"
-                            RowSpacing="1">
-
-                            <Grid.RowDefinitions Height="20">
-                                <RowDefinition Height="40" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="70" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <!--<BoxView
-                                Grid.Row="0"
-                                Grid.RowSpan="2"
-                                Color="Green" />-->
-                            <CheckBox
-                                Grid.Row="0"
-                                Grid.RowSpan="2"
-                                HorizontalOptions="Center"
-                                IsChecked="{Binding IsDone}"
-                                VerticalOptions="Center">
+            <ProgressBar Progress="{Binding Progress, Source={StaticResource userDataVM}, Mode=TwoWay}" ProgressColor="Red" />
 
 
-                                <!--  CheckedChanged="CheckBox_CheckedChanged"  -->
-                                <!--
-                                    Command="{Binding BindingContext.CheckedCommand, Source={x:Reference BrowseTodoPage}}"
-                                    CommandParameter="{Binding .}"
-                                -->
-                                <CheckBox.Behaviors>
-                                    <xct:EventToCommandBehavior
-                                        Command="{Binding BindingContext.CheckedCommand, Source={x:Reference BrowseTodoPage}}"
+            <RefreshView
+                x:DataType="local:TodoListViewModel"
+                Command="{Binding LoadItemsCommand}"
+                IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+
+                <CollectionView
+                    x:Name="TodoListView"
+                    Margin="10,0,10,0"
+                    ItemsSource="{Binding Items}"
+                    SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate>
+                            <Frame
+                                Padding="1"
+                                x:DataType="todo:TodoItemViewModel"
+                                CornerRadius="10"
+                                HasShadow="True">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=ItemTapped}"
                                         CommandParameter="{Binding .}"
-                                        EventName="CheckedChanged" />
-
-                                </CheckBox.Behaviors>
-
-                            </CheckBox>
-
-                            <!--<BoxView
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Color="Blue" />-->
-                            <Label
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Padding="10,10,10,10"
-                                FontSize="18"
-                                Text="{Binding Text}"
-                                VerticalOptions="Center" />
-
-                            <!--<BoxView
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Color="red" />-->
-                            <Label
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Padding="10,5,5,5"
-                                FontSize="14"
-                                Text="{Binding Reward}"
-                                VerticalOptions="Center" />
+                                        NumberOfTapsRequired="1" />
+                                </Frame.GestureRecognizers>
+                                <Grid
+                                    Margin="5,5,5,5"
+                                    Padding="0"
+                                    RowSpacing="1">
 
 
-                        </Grid>
+                                    <Grid.RowDefinitions Height="20">
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="30" />
+                                    </Grid.RowDefinitions>
 
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </RefreshView>
-    </StackLayout>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="60" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        HorizontalOptions="Center"
+                                        IsChecked="{Binding IsChecked}"
+                                        IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=IsLoading, Converter={xct:InvertedBoolConverter}}"
+                                        VerticalOptions="Center">
+
+
+                                        <!--
+                                            CheckedChanged="CheckBox_CheckedChanged"
+                                            Command="{Binding BindingContext.CheckedCommand, Source={x:Reference BrowseTodoPage}}"
+                                            CommandParameter="{Binding .}"
+                                        -->
+                                        <!--<CheckBox.Behaviors>
+                                            <xct:EventToCommandBehavior
+                                                Command="{Binding BindingContext.CheckedCommand, Source={x:Reference BrowseTodoPage}}"
+                                                CommandParameter="{Binding .}"
+                                                EventName="CheckedChanged" />
+
+                                        </CheckBox.Behaviors>-->
+
+                                    </CheckBox>
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Padding="10,10,10,10"
+                                        FontSize="18"
+                                        Text="{Binding Item.Text}"
+                                        VerticalOptions="Center" />
+
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Padding="10,5,5,5"
+                                        FontSize="14"
+                                        Text="{Binding Item.Reward}"
+                                        VerticalOptions="Center" />
+
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Padding="10,5,5,5"
+                                        FontSize="14"
+                                        HorizontalTextAlignment="End"
+                                        Text="{Binding Item.ExpReward}"
+                                        VerticalOptions="Center" />
+
+                                    <Button
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Grid.Column="2"
+                                        BackgroundColor="LightGray"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=DeleteItemCommand}"
+                                        CommandParameter="{Binding .}"
+                                        HeightRequest="40"
+                                        HorizontalOptions="Center"
+                                        Text="Del"
+                                        VerticalOptions="Center"
+                                        WidthRequest="70" />
+
+
+                                </Grid>
+                            </Frame>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+
+        </StackLayout>
+    </AbsoluteLayout>
 </ContentPage>
 
 

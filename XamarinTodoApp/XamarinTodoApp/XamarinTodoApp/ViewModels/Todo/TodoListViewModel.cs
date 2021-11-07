@@ -12,87 +12,90 @@ using XamarinTodoApp.ViewModels.Todo;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using XamarinTodoApp.Views.Todo;
+using Google.Cloud.Firestore;
+using System.Collections.Generic;
+using System.Linq;
+using XamarinTodoApp.ViewModels.General;
+using XamarinTodoApp.Resources;
+using XamarinTodoApp.Helpers;
 
 namespace XamarinTodoApp.ViewModels
 {
     public class TodoListViewModel : ViewModelBase
     {
-
-        private readonly string tempId = "-Mll4lTYtKLYS4viYp8x";
-        private TodoItem _selectedItem;
+        private readonly Action<TodoItem, bool> updateTodoAction;
+        private TodoItemViewModel _selectedItem;
         private string coins;
+        private bool isLoading;
+        private string level;
+        public UserData UserData { get; set; }
 
-        public ObservableCollection<TodoItem> Items { get; }
+        //?
+        public UserDataViewModel UserDataViewModel { get; set; }
+        public ObservableCollection<TodoItemViewModel> Items { get; set; }
         public AsyncCommand LoadItemsCommand { get; }
         public Command CheckedCommand { get; }
         public Command AddItemCommand { get; }
-        public Command<TodoItem> ItemTapped { get; }
+        public Command<TodoItemViewModel> ItemTapped { get; }
+        public AsyncCommand<TodoItemViewModel> DeleteItemCommand { get; }
 
+        public Command SortAlphabeticallyCommand { get; }
         public Command TestCommand { get; }
 
 
         public TodoListViewModel()
         {
             IsBusy = true;
-            Console.WriteLine("CONSTR");
+            IsLoading = false;
             Title = "Todo browse";
-            Items = new ObservableCollection<TodoItem>();
-            //LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            Items = new ObservableCollection<TodoItemViewModel>();
+            updateTodoAction = async (a, b) => await UpdateCheckedAsync(a, b);
+
             LoadItemsCommand = new AsyncCommand(ExecuteLoadItemsCommand);
-
-            //ItemTapped = new Command<TodoItem>(OnItemSelected);
-
+            ItemTapped = new Command<TodoItemViewModel>(OnItemSelected);
             AddItemCommand = new Command(OnAddItem);
-
-            CheckedCommand = new Command<TodoItem>(async (item) => await ExecuteChecked(item));
-            //CheckedCommand = new AsyncCommand<TodoItem>(ExecuteChecked);
-        }
-        void TestCom() { return; }
-
-
-        private async Task ExecuteChecked(TodoItem item)
-        {
-
-            if (IsBusy || item == null) return;
-            Console.WriteLine("EXEC CHECKED ");
-            await TodoStore.UpdateItemAsync(item.Id, item);
-
-            UserData userData = await GetUserDataAsync();
-            if (item.IsDone)
-            {
-                userData.Coins += item.Reward;
-            }
-            else
-            {
-                userData.Coins -= item.Reward;
-            }
-            Coins = userData.Coins.ToString();
-            item = null;
-            await UserDataStore.UpdateItemAsync(tempId, userData);
+            TestCommand = new Command(DebugCommand);
+            DeleteItemCommand = new AsyncCommand<TodoItemViewModel>(DeleteItem);
+            SortAlphabeticallyCommand = new Command(SortAlphabetically);
+            //CheckedCommand = new Command<TodoItemViewModel>(async (item) => await ExecuteChecked(item));
         }
 
 
-        public void ExecuteCheckedTest(TodoItem item)
+        void DebugCommand()
         {
-            if (IsBusy || item == null) return;
-            Console.WriteLine("EXEC CHECKED2 " + item.Text);
+
+        }
+
+
+        //orderby selected type w reflection- https://stackoverflow.com/questions/33159266/a-replacement-for-orderby-switch-in-c-sharp
+        void SortAlphabetically()
+        {
+            IsLoading = true;
+            var sortedItems = Items.OrderBy(x => x.Item.Text).ToList();
+            UpdateCollection(sortedItems);
+            IsLoading = false;
+        }
+
+        private void UpdateCollection(IEnumerable<TodoItemViewModel> items)
+        {
+            Items.Clear();
+            foreach (var item in items)
+            {
+                Items.Add(item);
+            }
         }
 
         private async Task ExecuteLoadItemsCommand()
         {
+
             Console.WriteLine("LOAD ITEMS");
             IsBusy = true;
-
             try
             {
-                Items.Clear();
                 var items = await TodoStore.GetItemsAsync(true);
-
-                foreach (var item in items)
-                {
-                    Items.Add(item);
-                }
-                await Task.Delay(10);
+                items = items.OrderByDescending(x => x.CreationDate);
+                var todoItemVMs = items.Select(x => new TodoItemViewModel(x, updateTodoAction));
+                UpdateCollection(todoItemVMs);
             }
             catch (Exception ex)
             {
@@ -104,24 +107,131 @@ namespace XamarinTodoApp.ViewModels
             }
         }
 
+        private async Task UpdateCheckedAsync(TodoItem item, bool isChecked)
+        {
+            if (item == null || IsLoading) return;
+            IsLoading = true;
+            try
+            {
+                //update item with new check value
+                item.IsDone = isChecked;
+                await TodoStore.UpdateItemAsync(item.Id, item);
+
+                //update userData coins/xp
+                var xpToChange = 0;
+                var coinsToChange = 0;
+                if (item.IsDone)
+                {
+                    xpToChange = item.ExpReward;
+                    coinsToChange = item.Reward;
+                }
+                else
+                {
+                    xpToChange = -item.ExpReward;
+                    coinsToChange = -item.Reward;
+                }
+
+                var payloadXP = new PayloadXP()
+                {
+                    ExpAmount = xpToChange,
+                    Callback = RefreshUserData
+                };
+
+                var payloadCoins = new PayloadCoins()
+                {
+                    CoinsAmount = coinsToChange,
+                    Callback = RefreshUserData
+                };
+                MessagingCenter.Send<ViewModelBase, PayloadXP>(this, MessageChannel.UserXPChanged, payloadXP);
+                MessagingCenter.Send<ViewModelBase, PayloadCoins>(this, MessageChannel.UserCoinsChanged, payloadCoins);
+
+
+                //Coins = UserData.Coins.ToString();
+                //await UserDataStore.UpdateItemAsync(tempId, UserData);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+
+        void RefreshUserData(UserData userData)
+        {
+            ApplicationCache.UserData = userData;
+            UserData = userData;
+        }
+        /*private void AddExperience(UserData userData)
+        {
+            userData.LevelData.CurrentExperience++;
+        }*/
+
+        private async Task DeleteItem(TodoItemViewModel item)
+        {
+            Console.WriteLine("delete called");
+            IsLoading = true;
+            try
+            {
+                Items.Remove(item);
+                await TodoStore.DeleteItemAsync(item.Item.Id);
+                //await Task.Delay(1000);
+                // Items.Remove(item);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+
+        public void ExecuteCheckedTest(TodoItemViewModel item)
+        {
+            if (IsBusy || item == null) return;
+            Console.WriteLine("EXEC CHECKED2 " + item.Item.Text);
+        }
+
         public async Task OnAppearing()
         {
+            Console.WriteLine("ON APPEARING");
             IsBusy = true;
 
             SelectedItem = null;
 
-            UserData userData = await GetUserDataAsync();
 
-            Coins = userData.Coins.ToString();
+
+            if (ApplicationCache.UserData == null)
+            {
+                ApplicationCache.UserData = await GetUserDataAsync();
+            }
+            UserData = ApplicationCache.UserData;
+
+            //MessagingCenter.Send<ViewModelBase, Action>(this, "UserDataChanged", TestAction);
+            //Coins = UserData.Coins.ToString();
+
+            //UserDataViewModel.Level = UserData.LevelData.Level.ToString();
+
+        }
+
+        void TestAction()
+        {
 
         }
         public Task OnDisappearing()
         {
+            Console.WriteLine("ON DISAPPEARING");
             IsBusy = true;
             return Task.CompletedTask;
         }
 
-        public TodoItem SelectedItem
+        public TodoItemViewModel SelectedItem
         {
             get => _selectedItem;
             set
@@ -131,37 +241,34 @@ namespace XamarinTodoApp.ViewModels
             }
         }
 
-        public string Coins
+        public bool IsLoading
         {
-            get => coins;
-            set => SetProperty(ref coins, value);
-            //LoadUserData();
+            get => isLoading;
+            set => SetProperty(ref isLoading, value);
         }
 
         public async Task<UserData> GetUserDataAsync()
         {
             UserData data = await UserDataStore.GetItemAsync(tempId);
-            int x = 0;
-            x++;
-
             return data;
         }
-
-
 
         private async void OnAddItem(object obj)
         {
             await Shell.Current.GoToAsync(nameof(NewTodoPage));
         }
 
-        /*async void OnItemSelected(TodoItem item)
+        async void OnItemSelected(TodoItemViewModel item)
         {
             if (item == null)
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            Console.WriteLine(item.Id);
-            await Shell.Current.GoToAsync($"{nameof(TodoDetailPage)}?{nameof(TodoDetailViewModel.ItemId)}={item.Id}");
-        }*/
+            Console.WriteLine(item.Item.Id);
+            await Shell.Current.GoToAsync($"{nameof(TodoDetailPage)}?{nameof(TodoDetailViewModel.ItemId)}={item.Item.Id}");
+        }
+
+
     }
+
 }

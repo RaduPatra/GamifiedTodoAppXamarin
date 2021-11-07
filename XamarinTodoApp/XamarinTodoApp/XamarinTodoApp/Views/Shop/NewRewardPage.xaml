@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="XamarinTodoApp.Views.Shop.NewRewardPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:helpers="clr-namespace:XamarinTodoApp.Helpers"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:local="clr-namespace:XamarinTodoApp.ViewModels.Shop"
+    xmlns:popuplayout="clr-namespace:Syncfusion.XForms.PopupLayout;assembly=Syncfusion.SfPopupLayout.XForms"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Name="NewReward"
+    Title="New Todo"
+    ios:Page.UseSafeArea="true"
+    x:DataType="local:NewRewardViewModel"
+    Shell.PresentationMode="ModalAnimated">
+
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <popuplayout:SfPopupLayout
+                x:Key="selectIconDialog"
+                x:Name="selectIconPopup"
+                x:DataType="local:NewRewardViewModel">
+                <popuplayout:SfPopupLayout.PopupView>
+                    <popuplayout:PopupView
+                        AutoSizeMode="Height"
+                        HeaderHeight="50"
+                        HeaderTitle="Select an icon"
+                        ShowCloseButton="False"
+                        WidthRequest="300">
+
+                        <popuplayout:PopupView.ContentTemplate>
+                            <DataTemplate>
+
+                                <CollectionView ItemsLayout="VerticalGrid, 4" ItemsSource="{Binding BindingContext.Images, Source={x:Reference NewReward}}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Padding="10" x:DataType="helpers:ImageInfo">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="50" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="50" />
+                                                </Grid.ColumnDefinitions>
+                                                <ImageButton
+                                                    Grid.RowSpan="2"
+                                                    BackgroundColor="Transparent"
+                                                    Command="{Binding BindingContext.ImageSelectedCommand, Source={x:Reference NewReward}}"
+                                                    CommandParameter="{Binding .}"
+                                                    HeightRequest="50"
+                                                    Source="{Binding ImgSource}"
+                                                    WidthRequest="50" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                            </DataTemplate>
+                        </popuplayout:PopupView.ContentTemplate>
+                    </popuplayout:PopupView>
+                </popuplayout:SfPopupLayout.PopupView>
+            </popuplayout:SfPopupLayout>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+
+    <!--<ContentPage.Content>-->
+    <StackLayout Padding="15" Spacing="3">
+        <Label Text="ffgfff" />
+        <Label FontSize="Medium" Text="Text" />
+        <Entry FontSize="Medium" Text="{Binding Text, Mode=TwoWay}" />
+
+        <Label FontSize="Medium" Text="Price" />
+        <Entry
+            FontSize="Medium"
+            Keyboard="Numeric"
+            Text="{Binding Price, Mode=TwoWay}" />
+
+        <StackLayout Orientation="Horizontal">
+            <Button
+                Command="{Binding CancelCommand}"
+                HorizontalOptions="FillAndExpand"
+                Text="Cancel" />
+            <Button
+                Command="{Binding SaveCommand}"
+                HorizontalOptions="FillAndExpand"
+                Text="Save" />
+        </StackLayout>
+
+        <Image
+            HeightRequest="80"
+            Source="{Binding SelectedImage, Mode=TwoWay}"
+            WidthRequest="80" />
+        <buttons:SfButton
+            BackgroundColor="Black"
+            Command="{Binding OpenPopupCommand}"
+            CommandParameter="{StaticResource selectIconDialog}"
+            HorizontalOptions="Center"
+            Text="Change Icon" />
+
+
+
+    </StackLayout>
+
+
+    <!--</ContentPage.Content>-->
+
+
+
+
+</ContentPage>

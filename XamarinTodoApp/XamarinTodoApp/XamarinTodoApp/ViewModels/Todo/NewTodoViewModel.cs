@@ -1,4 +1,5 @@
 ﻿using Firebase.Database;
+using Google.Cloud.Firestore;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -16,6 +17,7 @@ namespace XamarinTodoApp.ViewModels.Todo
     {
         private string text;
         private string reward;
+        private string experienceReward;
 
         public NewTodoViewModel()
         {
@@ -43,6 +45,12 @@ namespace XamarinTodoApp.ViewModels.Todo
             set => SetProperty(ref reward, value);
         }
 
+        public string ExpReward
+        {
+            get => experienceReward;
+            set => SetProperty(ref experienceReward, value);
+        }
+
         public Command SaveCommand { get; }
         public Command CancelCommand { get; }
 
@@ -55,12 +63,15 @@ namespace XamarinTodoApp.ViewModels.Todo
         private async void OnSave()
         {
             var fbkey = FirebaseKeyGenerator.Next();
+            DateTime date = DateTime.Now.ToUniversalTime();
             TodoItem newItem = new TodoItem()
             {
-                Id = fbkey,
+                Id = "",
                 Text = Text,
                 IsDone = false,
-                Reward = int.Parse(Reward)
+                Reward = int.Parse(Reward),
+                ExpReward = int.Parse(ExpReward),
+                CreationDate = Timestamp.FromDateTime(date)
             };
 
             await TodoStore.AddItemAsync(newItem);

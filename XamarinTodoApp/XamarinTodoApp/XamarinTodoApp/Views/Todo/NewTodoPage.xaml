@@ -20,6 +20,12 @@
                 Keyboard="Numeric"
                 Text="{Binding Reward, Mode=TwoWay}" />
 
+            <Label FontSize="Medium" Text="Experience Reward" />
+            <Entry
+                FontSize="Medium"
+                Keyboard="Numeric"
+                Text="{Binding ExpReward, Mode=TwoWay}" />
+
             <StackLayout Orientation="Horizontal">
                 <Button
                     Command="{Binding CancelCommand}"

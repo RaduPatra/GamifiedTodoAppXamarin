@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using XamarinTodoApp.ViewModels;
 using XamarinTodoApp.Views;
 using XamarinTodoApp.Views.Todo;
+using XamarinTodoApp.Views.Shop;
 
 namespace XamarinTodoApp
 {
@@ -20,6 +21,9 @@ namespace XamarinTodoApp
             //todos
             Routing.RegisterRoute(nameof(TodoDetailPage), typeof(TodoDetailPage));
             Routing.RegisterRoute(nameof(NewTodoPage), typeof(NewTodoPage));
+
+            Routing.RegisterRoute(nameof(NewRewardPage), typeof(NewRewardPage));
+
         }
 
         private async void OnMenuItemClicked(object sender, EventArgs e)
