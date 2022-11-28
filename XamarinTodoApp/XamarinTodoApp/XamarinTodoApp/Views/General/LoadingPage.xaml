@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="XamarinTodoApp.Views.General.LoadingPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    BackgroundColor="{StaticResource Primary}"
+    BackgroundImageSource="splash.png"
+    >
+
+    <ContentPage.Content>
+
+        <StackLayout Margin="0" Padding="0">
+
+            <!--<Label FontSize="Large" Text="Loading" />-->
+            <!--<Image  Aspect="AspectFit" Source="{xct:ImageResource Id=XamarinTodoApp.Resources.TestSplash.png}" />-->
+            <!--<Image  Aspect="AspectFit" Source="{xct:ImageResource Id=XamarinTodoApp.Resources.TestSplash.png}" />-->
+        </StackLayout>
+
+    </ContentPage.Content>
+
+    <!--<ContentPage.Content>
+        <StackLayout>
+            <Label Text="Loading!"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Loading!"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Loading!"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Loading!"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Loading!"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Loading!"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Loading!"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Loading!"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+
+        </StackLayout>
+    </ContentPage.Content>-->
+</ContentPage>

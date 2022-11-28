@@ -16,5 +16,8 @@ namespace XamarinTodoApp.Models
 
         [FirestoreProperty]
         public int Quantity { get; set; }
+
+        [FirestoreProperty]
+        public DocumentReference CreatedBy { get; set; }
     }
 }

@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="XamarinTodoApp.Views.Stats.StatsPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:XamarinTodoApp.Converters"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    Title="Stats"
+    BackgroundColor="WhiteSmoke">
+
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:PercentageConverter x:Key="PercentageConverter" />
+            <converters:BoolToColorConverter
+                x:Key="BoolToColorConverter"
+                DefaultColor="White"
+                SelectedColor="LightGray" />
+
+        </ResourceDictionary>
+
+
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout>
+
+
+            <StackLayout>
+
+                <CollectionView
+                    x:Name="ItemsListView"
+                    ItemsLayout="VerticalList"
+                    ItemsSource="{Binding Attributes, Source={StaticResource userDataVM}}"
+                    ItemsUpdatingScrollMode="KeepLastItemInView"
+                    SelectionMode="None">
+
+                    <CollectionView.Header>
+                        <StackLayout>
+                            <Frame Margin="10" CornerRadius="10">
+                                <StackLayout>
+                                    <!--<Image HeightRequest="25" Source="{xct:ImageResource XamarinTodoApp.Resources.Other.dollar.png}" />-->
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image HeightRequest="25" Source="{xct:ImageResource XamarinTodoApp.Resources.Other.swords.png}" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="25"
+                                            Text="{Binding Level, Source={StaticResource userDataVM}, StringFormat='Life Level: {0}'}"
+                                            TextColor="White" />
+                                    </StackLayout>
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image HeightRequest="25" Source="{xct:ImageResource XamarinTodoApp.Resources.Other.dollar.png}" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="18"
+                                            Text="{Binding Coins, Source={StaticResource userDataVM}}"
+                                            TextColor="Orange" />
+                                    </StackLayout>
+                                    <ProgressBar Progress="{Binding Progress, Source={StaticResource userDataVM}, Mode=TwoWay}" ProgressColor="White" />
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            HorizontalOptions="EndAndExpand"
+                                            Text="{Binding Experience, Source={StaticResource userDataVM}}"
+                                            TextColor="White" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            Text="/"
+                                            TextColor="White" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            Text="{Binding ExperienceToNextLevel, Source={StaticResource userDataVM}}"
+                                            TextColor="White" />
+                                    </StackLayout>
+
+                                </StackLayout>
+
+                                <Frame.Background>
+
+                                    <LinearGradientBrush EndPoint="1,0">
+                                        <GradientStop Offset="0" Color="#51d4f2" />
+                                        <GradientStop Offset="1" Color="{StaticResource Primary}" />
+
+                                    </LinearGradientBrush>
+                                </Frame.Background>
+
+                            </Frame>
+
+                            <!--<Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                Text="Attributes" />
+                            <BoxView HeightRequest="1" Color="Black" />-->
+                        </StackLayout>
+
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate>
+
+                            <StackLayout Padding="10,10,10,1">
+                                <Frame Padding="10,5,10,5" CornerRadius="10">
+                                    <StackLayout Spacing="0">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="18"
+                                            Text="{Binding Item.Name}"
+                                            TextColor="{StaticResource Primary}" />
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="30" />
+                                                <RowDefinition Height="30" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!--<Label FontSize="16" Text="{Binding Item.Name}" />-->
+                                            <Image
+                                                Grid.RowSpan="2"
+                                                Margin="0,0,10,0"
+                                                HeightRequest="40"
+                                                Source="{Binding Image}" />
+                                            <StackLayout
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Orientation="Horizontal"
+                                                Spacing="0">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="18"
+                                                    Text="{Binding Item.CurrentExperience}" />
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="18"
+                                                    Text="/" />
+                                                <Label
+                                                    Grid.Column="2"
+                                                    FontAttributes="Bold"
+                                                    FontSize="18"
+                                                    Text="{Binding Item.ExperienceToNextLevel}" />
+                                            </StackLayout>
+
+                                            <Label
+                                                Grid.Column="1"
+                                                FontAttributes="Bold"
+                                                FontSize="18"
+                                                Text="{Binding Item.Level, StringFormat='Level {0}'}" />
+
+                                            <ProgressBar
+                                                Grid.RowSpan="2"
+                                                Grid.Column="2"
+                                                Progress="{Binding Progress, Mode=TwoWay}"
+                                                ProgressColor="Red" />
+                                            <Label
+                                                Grid.RowSpan="2"
+                                                Grid.Column="3"
+                                                Text="{Binding Progress, Converter={StaticResource PercentageConverter}, StringFormat='{0}%'}"
+                                                VerticalOptions="Center" />
+
+
+                                        </Grid>
+                                    </StackLayout>
+                                </Frame>
+
+                                <!--<StackLayout>
+                                    <Label FontSize="16" Text="{Binding Item.Name}" />
+                                    <Image Source="{Binding Image}" HeightRequest="35"/>
+                                    <Label FontSize="16" Text="{Binding Item.CurrentExperience}" />
+                                    <Label FontSize="16" Text="{Binding Item.ExperienceToNextLevel}" />
+                                    <Label FontSize="16" Text="{Binding Item.Level}" />
+
+                                    <ProgressBar Progress="{Binding Progress, Mode=TwoWay}" ProgressColor="Red" />
+
+                                </StackLayout>-->
+
+
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+
+
+
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>

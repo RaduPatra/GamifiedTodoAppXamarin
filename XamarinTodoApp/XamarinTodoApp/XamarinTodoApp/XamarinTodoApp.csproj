@@ -6,7 +6,98 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\AttributeIcons\1421738.png" />
+    <None Remove="Resources\AttributeIcons\1687677.png" />
+    <None Remove="Resources\AttributeIcons\1926446.png" />
+    <None Remove="Resources\AttributeIcons\1964245.png" />
+    <None Remove="Resources\AttributeIcons\1979445.png" />
+    <None Remove="Resources\AttributeIcons\2163350.png" />
+    <None Remove="Resources\AttributeIcons\2225664.png" />
+    <None Remove="Resources\AttributeIcons\2228649.png" />
+    <None Remove="Resources\AttributeIcons\2552073.png" />
+    <None Remove="Resources\AttributeIcons\2746938.png" />
+    <None Remove="Resources\AttributeIcons\2838590.png" />
+    <None Remove="Resources\AttributeIcons\2932560.png" />
+    <None Remove="Resources\AttributeIcons\2933116.png" />
+    <None Remove="Resources\AttributeIcons\2950430.png" />
+    <None Remove="Resources\AttributeIcons\3002327.png" />
+    <None Remove="Resources\AttributeIcons\3002499.png" />
+    <None Remove="Resources\AttributeIcons\3068375.png" />
+    <None Remove="Resources\AttributeIcons\3112946.png" />
+    <None Remove="Resources\AttributeIcons\3124523.png" />
+    <None Remove="Resources\AttributeIcons\3160511.png" />
+    <None Remove="Resources\AttributeIcons\3267095.png" />
+    <None Remove="Resources\AttributeIcons\3330916.png" />
+    <None Remove="Resources\AttributeIcons\3364923.png" />
+    <None Remove="Resources\AttributeIcons\3375347.png" />
+    <None Remove="Resources\AttributeIcons\3712816.png" />
+    <None Remove="Resources\AttributeIcons\3816023.png" />
+    <None Remove="Resources\AttributeIcons\3898712.png" />
+    <None Remove="Resources\AttributeIcons\4033300.png" />
+    <None Remove="Resources\AttributeIcons\4088432.png" />
+    <None Remove="Resources\AttributeIcons\4236484.png" />
+    <None Remove="Resources\AttributeIcons\4236538.png" />
+    <None Remove="Resources\AttributeIcons\4269688.png" />
+    <None Remove="Resources\AttributeIcons\4276392.png" />
+    <None Remove="Resources\AttributeIcons\4366731.png" />
+    <None Remove="Resources\AttributeIcons\4392741.png" />
+    <None Remove="Resources\AttributeIcons\4452143.png" />
+    <None Remove="Resources\AttributeIcons\4489772.png" />
+    <None Remove="Resources\AttributeIcons\4542543.png" />
+    <None Remove="Resources\AttributeIcons\4542548.png" />
+    <None Remove="Resources\AttributeIcons\4549407.png" />
+    <None Remove="Resources\AttributeIcons\4578515.png" />
+    <None Remove="Resources\AttributeIcons\4693872.png" />
+    <None Remove="Resources\AttributeIcons\4772733.png" />
+    <None Remove="Resources\AttributeIcons\4784946.png" />
+    <None Remove="Resources\AttributeIcons\4872183.png" />
+    <None Remove="Resources\AttributeIcons\503470.png" />
+    <None Remove="Resources\AttributeIcons\535142.png" />
+    <None Remove="Resources\AttributeIcons\535183.png" />
+    <None Remove="Resources\AttributeIcons\5684726.png" />
+    <None Remove="Resources\AttributeIcons\5737171.png" />
+    <None Remove="Resources\AttributeIcons\6272682.png" />
+    <None Remove="Resources\AttributeIcons\6273697.png" />
+    <None Remove="Resources\AttributeIcons\6350118.png" />
+    <None Remove="Resources\AttributeIcons\763812.png" />
+    <None Remove="Resources\AttributeIcons\806741.png" />
+    <None Remove="Resources\AttributeIcons\842049.png" />
+    <None Remove="Resources\AttributeIcons\877637.png" />
+    <None Remove="Resources\AttributeIcons\communication.png" />
+    <None Remove="Resources\AttributeIcons\communications.png" />
+    <None Remove="Resources\AttributeIcons\default.png" />
+    <None Remove="Resources\AttributeIcons\exercise.png" />
+    <None Remove="Resources\AttributeIcons\gym.png" />
+    <None Remove="Resources\AttributeIcons\hand.png" />
+    <None Remove="Resources\AttributeIcons\instant-messaging.png" />
+    <None Remove="Resources\AttributeIcons\meeting.png" />
+    <None Remove="Resources\AttributeIcons\spear.png" />
+    <None Remove="Resources\AttributeIcons\speech-bubble.png" />
     <None Remove="Resources\coin.png" />
+    <None Remove="Resources\Other\bar-chart.png" />
+    <None Remove="Resources\Other\bell.png" />
+    <None Remove="Resources\Other\bin.png" />
+    <None Remove="Resources\Other\calendar.png" />
+    <None Remove="Resources\Other\cancel.png" />
+    <None Remove="Resources\Other\cancel2.png" />
+    <None Remove="Resources\Other\check.png" />
+    <None Remove="Resources\Other\checkpen.png" />
+    <None Remove="Resources\Other\chest.png" />
+    <None Remove="Resources\Other\chest2.png" />
+    <None Remove="Resources\Other\chronometer.png" />
+    <None Remove="Resources\Other\clean.png" />
+    <None Remove="Resources\Other\clipboard.png" />
+    <None Remove="Resources\Other\clock.png" />
+    <None Remove="Resources\Other\dollar.png" />
+    <None Remove="Resources\Other\double-check.png" />
+    <None Remove="Resources\Other\firework.png" />
+    <None Remove="Resources\Other\glitter.png" />
+    <None Remove="Resources\Other\plus.png" />
+    <None Remove="Resources\Other\plus2.png" />
+    <None Remove="Resources\Other\repeat.png" />
+    <None Remove="Resources\Other\statistics.png" />
+    <None Remove="Resources\Other\swords.png" />
+    <None Remove="Resources\Other\upgrade.png" />
     <None Remove="Resources\RewardIcons\archive.png" />
     <None Remove="Resources\RewardIcons\archive2.png" />
     <None Remove="Resources\RewardIcons\baseball.png" />
@@ -37,19 +128,37 @@
     <None Remove="Resources\RewardIcons\vr.png" />
     <None Remove="Resources\RewardIcons\wine.png" />
     <None Remove="Resources\RewardIcons\workplace.png" />
+    <None Remove="Resources\splash.png" />
+    <None Remove="Resources\Stars\fourStar.png" />
+    <None Remove="Resources\Stars\oneStar.png" />
+    <None Remove="Resources\Stars\threeStar.png" />
+    <None Remove="Resources\Stars\twoStar.png" />
+    <None Remove="Resources\Stars\twoStar2.png" />
+    <None Remove="Resources\TestSplash.png" />
+    <None Remove="Resources\TestSplash2.png" />
     <None Remove="xamarintodoapp-firebase-adminsdk-8u456-629604879b.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FirebaseDatabase.net" Version="4.0.6" />
+    <PackageReference Include="FirebaseAuthentication.net" Version="3.7.2" />
+    <PackageReference Include="FirebaseDatabase.net" Version="4.0.7" />
     <PackageReference Include="Google.Cloud.Firestore" Version="2.4.0" />
-    <PackageReference Include="Grpc.Core.Xamarin" Version="2.41.0" />
+    <PackageReference Include="Grpc.Core.Xamarin" Version="2.42.0" />
+    <PackageReference Include="Plugin.LocalNotification" Version="9.1.0" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
-    <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="19.3.0.47" />
-    <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="19.3.0.44" />
-    <PackageReference Include="Syncfusion.Xamarin.SfPopupLayout" Version="19.3.0.47" />
-    <PackageReference Include="Xamarin.CommunityToolkit" Version="1.2.0" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />  
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.3" />
+    <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="19.3.0.57" />
+    <PackageReference Include="Syncfusion.Xamarin.Cards" Version="19.3.0.57" />
+    <PackageReference Include="Syncfusion.Xamarin.Core" Version="19.3.0.57" />
+    <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="19.3.0.57" />
+    <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="19.3.0.57" />
+    <PackageReference Include="Syncfusion.Xamarin.SfPicker" Version="19.3.0.57" />
+    <PackageReference Include="Syncfusion.Xamarin.SfPopupLayout" Version="19.3.0.57" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="Xamarin.CommunityToolkit" Version="1.3.1" />
+    <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2244" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
   </ItemGroup>
 
@@ -60,10 +169,40 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Views\Attribute\AttributePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Attribute\NewAttributePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Attribute\NewAttributeTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Attribute\UpdateAttributePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\General\ContextMenuView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\General\LoadingPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\General\LoginShell.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\General\PersonPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\General\RegisterPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Shop\NewRewardPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Shop\NewRewardTemplate.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Shop\RewardDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Shop\RewardInventoryPage.xaml">
@@ -75,7 +214,13 @@
     <EmbeddedResource Update="Views\Shop\TabbedShopPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Stats\StatsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Todo\NewTodoPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Todo\NewTodoTemplate.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Todo\TodoDetailPage.xaml">
@@ -84,10 +229,101 @@
     <EmbeddedResource Update="Views\Todo\TodoListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\AttributeIcons\1421738.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\1687677.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\1926446.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\1964245.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\1979445.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\2163350.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\2225664.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\2228649.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\2552073.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\2746938.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\2838590.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\2932560.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\2933116.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\2950430.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3002327.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3002499.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3068375.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3112946.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3124523.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3160511.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3267095.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3330916.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3364923.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3375347.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3712816.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3816023.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\3898712.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4033300.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4088432.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4236484.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4236538.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4269688.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4276392.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4366731.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4392741.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4452143.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4489772.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4542543.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4542548.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4549407.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4578515.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4693872.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4772733.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4784946.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\4872183.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\503470.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\535142.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\535183.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\5684726.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\5737171.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\6272682.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\6273697.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\6350118.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\763812.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\806741.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\842049.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\877637.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\communication.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\communications.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\default.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\exercise.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\gym.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\hand.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\instant-messaging.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\meeting.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\spear.png" />
+    <EmbeddedResource Include="Resources\AttributeIcons\speech-bubble.png" />
     <EmbeddedResource Include="Resources\coin.png" />
 	  <EmbeddedResource Include="Resources\credentials.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Other\bar-chart.png" />
+	  <EmbeddedResource Include="Resources\Other\bell.png" />
+	  <EmbeddedResource Include="Resources\Other\bin.png" />
+	  <EmbeddedResource Include="Resources\Other\calendar.png" />
+	  <EmbeddedResource Include="Resources\Other\cancel.png" />
+	  <EmbeddedResource Include="Resources\Other\cancel2.png" />
+	  <EmbeddedResource Include="Resources\Other\check.png" />
+	  <EmbeddedResource Include="Resources\Other\checkpen.png" />
+	  <EmbeddedResource Include="Resources\Other\chest.png" />
+	  <EmbeddedResource Include="Resources\Other\chest2.png" />
+	  <EmbeddedResource Include="Resources\Other\chronometer.png" />
+	  <EmbeddedResource Include="Resources\Other\clean.png" />
+	  <EmbeddedResource Include="Resources\Other\clipboard.png" />
+	  <EmbeddedResource Include="Resources\Other\clock.png" />
+	  <EmbeddedResource Include="Resources\Other\dollar.png" />
+	  <EmbeddedResource Include="Resources\Other\double-check.png" />
+	  <EmbeddedResource Include="Resources\Other\firework.png" />
+	  <EmbeddedResource Include="Resources\Other\glitter.png" />
+	  <EmbeddedResource Include="Resources\Other\plus.png" />
+	  <EmbeddedResource Include="Resources\Other\plus2.png" />
+	  <EmbeddedResource Include="Resources\Other\repeat.png" />
+	  <EmbeddedResource Include="Resources\Other\statistics.png" />
+	  <EmbeddedResource Include="Resources\Other\swords.png" />
+	  <EmbeddedResource Include="Resources\Other\upgrade.png" />
 	  <EmbeddedResource Include="Resources\RewardIcons\archive.png" />
 	  <EmbeddedResource Include="Resources\RewardIcons\archive2.png" />
 	  <EmbeddedResource Include="Resources\RewardIcons\baseball.png" />
@@ -118,6 +354,16 @@
 	  <EmbeddedResource Include="Resources\RewardIcons\vr.png" />
 	  <EmbeddedResource Include="Resources\RewardIcons\wine.png" />
 	  <EmbeddedResource Include="Resources\RewardIcons\workplace.png" />
+	  <EmbeddedResource Include="Resources\splash.png" />
+	  <EmbeddedResource Include="Resources\Stars\fourStar.png" />
+	  <EmbeddedResource Include="Resources\Stars\oneStar.png" />
+	  <EmbeddedResource Include="Resources\Stars\threeStar.png" />
+	  <EmbeddedResource Include="Resources\Stars\twoStar.png" />
+	  <EmbeddedResource Include="Resources\Stars\twoStar2.png" />
+	  <EmbeddedResource Include="Resources\TestSplash.png" />
+	  <EmbeddedResource Include="Resources\TestSplash2.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

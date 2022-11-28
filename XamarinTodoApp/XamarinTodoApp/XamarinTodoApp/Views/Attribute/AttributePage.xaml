@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="XamarinTodoApp.Views.Attribute.AttributePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:cards="clr-namespace:Syncfusion.XForms.Cards;assembly=Syncfusion.Cards.XForms"
+    xmlns:contextview="clr-namespace:XamarinTodoApp.Views.General"
+    xmlns:converters="clr-namespace:XamarinTodoApp.Converters"
+    xmlns:local="clr-namespace:XamarinTodoApp.ViewModels.Attribute"
+    xmlns:model="clr-namespace:XamarinTodoApp.Models"
+    xmlns:stat="clr-namespace:XamarinTodoApp.ViewModels.Attribute"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Name="AttrPage"
+    Title="Your Attributes"
+    x:DataType="local:AttributeViewModel"
+    BackgroundColor="WhiteSmoke"
+    Shell.NavBarIsVisible="{Binding ContextMenuVM.IsNavBarOn}"
+    Shell.TabBarIsVisible="False">
+
+    <ContentPage.BindingContext>
+        <local:AttributeViewModel />
+    </ContentPage.BindingContext>
+
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior Command="{Binding PageAppearingCommand}" EventName="Appearing" />
+    </ContentPage.Behaviors>
+
+
+    <ContentPage.ToolbarItems>
+        <!--<ToolbarItem Command="{Binding AddItemCommand}" Text="Add" />-->
+    </ContentPage.ToolbarItems>
+
+
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:MultiConverter x:Key="MultiConverter" />
+            <converters:BoolToColorConverter
+                x:Key="BoolToColorConverter"
+                DefaultColor="White"
+                SelectedColor="LightGray" />
+
+        </ResourceDictionary>
+
+
+    </ContentPage.Resources>
+
+
+    <StackLayout>
+        <AbsoluteLayout>
+
+
+            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+
+                <contextview:ContextMenuView x:Name="contextToolbar" />
+
+
+                <RefreshView Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+                    <StackLayout>
+
+                        <CollectionView
+                            x:Name="ItemsListView"
+                            Margin="10,20,10,0"
+                            ItemsSource="{Binding Attributes, Source={StaticResource userDataVM}}"
+                            SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Margin="7" x:DataType="local:AttributeItemViewModel">
+                                        <Frame
+                                            xct:TouchEffect.Command="{Binding Source={RelativeSource AncestorType={x:Type local:AttributeViewModel}}, Path=ItemTapped}"
+                                            xct:TouchEffect.CommandParameter="{Binding .}"
+                                            xct:TouchEffect.LongPressCommand="{Binding Source={RelativeSource AncestorType={x:Type local:AttributeViewModel}}, Path=ContextMenuVM.LongPressCommand}"
+                                            xct:TouchEffect.LongPressDuration="1000"
+                                            xct:TouchEffect.NativeAnimation="True"
+                                            xct:TouchEffect.ShouldMakeChildrenInputTransparent="True"
+                                            BackgroundColor="{Binding IsSelected, Converter={StaticResource BoolToColorConverter}}"
+                                            CornerRadius="10"
+                                            HasShadow="True"
+                                            HeightRequest="50">
+                                            <xct:TouchEffect.LongPressCommandParameter>
+                                                <MultiBinding Converter="{StaticResource MultiConverter}">
+                                                    <Binding Source="{x:Reference contextToolbar}" />
+                                                    <Binding Path="." />
+                                                </MultiBinding>
+                                            </xct:TouchEffect.LongPressCommandParameter>
+                                            <StackLayout
+                                                Margin="3"
+                                                Padding="0"
+                                                Orientation="Horizontal">
+                                                <Image
+                                                    HeightRequest="50"
+                                                    Source="{Binding Image}"
+                                                    WidthRequest="50" />
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="18"
+                                                    LineBreakMode="NoWrap"
+                                                    Style="{DynamicResource ListItemTextStyle}"
+                                                    Text="{Binding Item.Name}"
+                                                    VerticalOptions="Center" />
+                                                <!--<buttons:SfButton
+                                                BackgroundColor="LightGray"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:AttributeViewModel}}, Path=ItemTapped}"
+                                                CommandParameter="{Binding .}"
+                                                CornerRadius="20"
+                                                FontAttributes="Bold"
+                                                HorizontalOptions="EndAndExpand"
+                                                Text="test" />-->
+
+
+                                            </StackLayout>
+                                        </Frame>
+                                    </StackLayout>
+
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                    </StackLayout>
+                </RefreshView>
+
+            </StackLayout>
+
+            <buttons:SfButton
+                AbsoluteLayout.LayoutBounds=".98,.98,-1,1"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                BackgroundColor="{StaticResource Primary}"
+                Command="{Binding AddItemCommand}"
+                CornerRadius="100"
+                HasShadow="false"
+                HeightRequest="60"
+                HorizontalOptions="Center"
+                ImageWidth="50"
+                ShadowColor="black"
+                ShowIcon="True"
+                VerticalOptions="Center"
+                WidthRequest="60">
+                <buttons:SfButton.Image>
+                    <Image xct:IconTintColorEffect.TintColor="White" Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Other.plus2.png}" />
+                </buttons:SfButton.Image>
+            </buttons:SfButton>
+        </AbsoluteLayout>
+    </StackLayout>
+
+
+
+</ContentPage>

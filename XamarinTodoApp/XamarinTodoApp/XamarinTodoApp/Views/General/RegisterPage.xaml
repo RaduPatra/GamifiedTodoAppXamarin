@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="XamarinTodoApp.Views.General.RegisterPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+    xmlns:local="clr-namespace:XamarinTodoApp.ViewModels.General"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    Title="Register"
+    x:DataType="local:RegisterViewModel"
+    BackgroundColor="WhiteSmoke"
+    Shell.NavBarIsVisible="True"
+    mc:Ignorable="d">
+
+    <ContentPage.BindingContext>
+        <local:RegisterViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior Command="{Binding PageAppearingCommand}" EventName="Appearing" />
+    </ContentPage.Behaviors>
+    <ContentPage.Content>
+
+
+        <Grid VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <!--<Image
+                Aspect="Fill"
+                HeightRequest="300"
+                Source="overlay.png"
+                VerticalOptions="StartAndExpand" />-->
+
+            <BoxView
+                x:Name="imageBoxView"
+                HeightRequest="300"
+                HorizontalOptions="Fill"
+                VerticalOptions="StartAndExpand">
+
+                <BoxView.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#51d4f2" />
+                        <GradientStop Offset="1" Color="{StaticResource Primary}" />
+                    </LinearGradientBrush>
+                </BoxView.Background>
+            </BoxView>
+
+
+            <StackLayout
+                Margin="0,20"
+                HorizontalOptions="Center"
+                Orientation="Vertical"
+                VerticalOptions="Center">
+                <Image
+                    HeightRequest="100"
+                    Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Other.check.png}"
+                    VerticalOptions="Center"
+                    WidthRequest="100" />
+
+            </StackLayout>
+
+            <Frame
+                Grid.Row="1"
+                Margin="20,-60,20,0"
+                Padding="25"
+                CornerRadius="10"
+                HasShadow="True"
+                HeightRequest="300"
+                VerticalOptions="Start">
+                <StackLayout>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="24"
+                        HorizontalOptions="Center"
+                        Text="Register" />
+
+
+                    <inputLayout:SfTextInputLayout
+                        ContainerType="Outlined"
+                        ErrorText="{Binding EmailErrorMessage}"
+                        FocusedColor="Blue"
+                        HasError="{Binding EmailHasError}"
+                        HelperText="Enter your email"
+                        Hint="Email"
+                        HorizontalOptions="FillAndExpand"
+                        IsHintAlwaysFloated="FALSE"
+                        LeadingViewPosition="Inside">
+                        <Entry FontSize="Medium" Text="{Binding RegisterEmailEntry, Mode=TwoWay}" />
+                    </inputLayout:SfTextInputLayout>
+
+                    <inputLayout:SfTextInputLayout
+                        ContainerType="Outlined"
+                        EnablePasswordVisibilityToggle="True"
+                        ErrorText="{Binding PassErrorMessage}"
+                        FocusedColor="Blue"
+                        HasError="{Binding PassHasError}"
+                        HelperText="Enter your password"
+                        Hint="Password"
+                        HorizontalOptions="FillAndExpand"
+                        IsHintAlwaysFloated="FALSE"
+                        LeadingViewPosition="Inside">
+                        <Entry FontSize="Medium" Text="{Binding RegisterPasswordEntry, Mode=TwoWay}" />
+                    </inputLayout:SfTextInputLayout>
+
+
+
+                    <Button
+                        Margin="10"
+                        Padding="10"
+                        Command="{Binding RegisterCommand}"
+                        CornerRadius="30"
+                        HeightRequest="40"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Register"
+                        TextColor="White"
+                        WidthRequest="150">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="1,0">
+                                <GradientStop Offset="0" Color="{StaticResource Primary}" />
+                                <GradientStop Offset="1" Color="#51F1F2" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+
+                    <ActivityIndicator
+                        HeightRequest="40"
+                        IsRunning="{Binding IsBusy}"
+                        WidthRequest="40" />
+
+                </StackLayout>
+            </Frame>
+
+        </Grid>
+
+
+
+    </ContentPage.Content>
+</ContentPage>

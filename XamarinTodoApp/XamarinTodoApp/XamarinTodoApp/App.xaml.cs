@@ -4,6 +4,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms.Xaml;
 using XamarinTodoApp.Models;
 using XamarinTodoApp.Services;
+using XamarinTodoApp.Services.Firestore;
 using XamarinTodoApp.Views;
 using Google.Cloud.Firestore;
 using System.IO;
@@ -12,13 +13,17 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using XamarinTodoApp.ViewModels.General;
+using XamarinTodoApp.Resources;
+using XamarinTodoApp.Views.General;
+using Plugin.LocalNotification;
+using XamarinTodoApp.Services.Interfaces;
 
 namespace XamarinTodoApp
 {
     public partial class App : Application
     {
         //FirestoreDb db;
-
+        AuthService AuthService => DependencyService.Get<AuthService>();
         public App()
         {
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTEzNzgzQDMxMzkyZTMzMmUzMFRyZDE3MmJMZy9hQmdnMm9WUHc5WUV0ZGFENFU0TVZ6UlhkcmVTK1JYNWs9");
@@ -39,15 +44,26 @@ namespace XamarinTodoApp
             DependencyService.Register<FirestoreInventory>();
 
 
+            DependencyService.Register<AuthService>();
+
+
             DependencyService.RegisterSingleton<IApplicationCache>(new ApplicationCache());
 
 
+            DependencyService.Register<FirestoreUser>();//
 
 
-            // DependencyService.RegisterSingleton<UserDataViewModel>(new UserDataViewModel());
-            //InitializeComponent();
 
-            MainPage = new AppShell();
+
+
+            var env = DependencyService.Get<IEnvironment>();
+
+            var color = Color.FromHex("#2196F3");
+            env?.SetNavigationBarColor(color);
+            MainPage = new LoadingPage();
+
+
+            //NotificationCenter.Current.CancelAll();
         }
 
 
@@ -95,19 +111,30 @@ namespace XamarinTodoApp
                     }
                 }
             }
-            else
-            {
-                Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", localPath);
-            }
+
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", localPath);
+
             //var fileContent = File.ReadAllText(localPath);
         }
 
 
         protected override async void OnStart()
         {
+
             await SetupFirebaseCredentials();
-            var userDataVM = Application.Current.Resources["userDataVM"] as UserDataViewModel;
-            await userDataVM.Init();
+            if (!string.IsNullOrEmpty(Preferences.Get(Constants.FirebaseRefreshToken, "")))
+            {
+
+                await AuthService.RefreshUserToken();
+                MainPage = new AppShell();
+            }
+            else
+            {
+                //MainPage = new LoginPage();
+                MainPage = new LoginShell();
+            }
+
+
 
         }
 
@@ -118,5 +145,7 @@ namespace XamarinTodoApp
         protected override void OnResume()
         {
         }
+
+
     }
 }

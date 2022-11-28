@@ -3,40 +3,40 @@
     x:Class="XamarinTodoApp.Views.Todo.NewTodoPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:converters="clr-namespace:XamarinTodoApp.Converters"
+    xmlns:custom="clr-namespace:XamarinTodoApp.CustomControls"
+    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     xmlns:local="clr-namespace:XamarinTodoApp.ViewModels.Todo"
+    xmlns:model="clr-namespace:XamarinTodoApp.Models"
+    xmlns:stat="clr-namespace:XamarinTodoApp.ViewModels.Attribute"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:view="clr-namespace:XamarinTodoApp.Views.Todo"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
     Title="New Todo"
     ios:Page.UseSafeArea="true"
-    x:DataType="local:NewTodoViewModel"
-    Shell.PresentationMode="ModalAnimated">
-    <ContentPage.Content>
-        <StackLayout Padding="15" Spacing="3">
-            <Label FontSize="Medium" Text="Text" />
-            <Entry FontSize="Medium" Text="{Binding Text, Mode=TwoWay}" />
+    BackgroundColor="WhiteSmoke"
+    Shell.NavBarIsVisible="true"
+    Shell.TabBarIsVisible="False">
 
-            <Label FontSize="Medium" Text="Reward" />
-            <Entry
-                FontSize="Medium"
-                Keyboard="Numeric"
-                Text="{Binding Reward, Mode=TwoWay}" />
 
-            <Label FontSize="Medium" Text="Experience Reward" />
-            <Entry
-                FontSize="Medium"
-                Keyboard="Numeric"
-                Text="{Binding ExpReward, Mode=TwoWay}" />
+    <ContentPage.BindingContext>
+        <local:NewTodoViewModel />
+    </ContentPage.BindingContext>
 
-            <StackLayout Orientation="Horizontal">
-                <Button
-                    Command="{Binding CancelCommand}"
-                    HorizontalOptions="FillAndExpand"
-                    Text="Cancel" />
-                <Button
-                    Command="{Binding SaveCommand}"
-                    HorizontalOptions="FillAndExpand"
-                    Text="Save" />
-            </StackLayout>
-        </StackLayout>
-    </ContentPage.Content>
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior Command="{Binding PageAppearingCommand}" EventName="Appearing" />
+    </ContentPage.Behaviors>
+
+
+    <StackLayout>
+        <view:NewTodoTemplate />
+    </StackLayout>
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding TestCommand}" Text="Test" />
+    </ContentPage.ToolbarItems>-->
+
 
 </ContentPage>

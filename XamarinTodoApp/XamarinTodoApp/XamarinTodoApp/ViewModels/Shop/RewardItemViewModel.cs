@@ -5,10 +5,11 @@ using System.Reflection;
 using System.Text;
 using Xamarin.Forms;
 using XamarinTodoApp.Models;
+using XamarinTodoApp.Services.Interfaces;
 
 namespace XamarinTodoApp.ViewModels.Shop
 {
-    public class RewardItemViewModel : ObservableObject
+    public class RewardItemViewModel : ObservableObject, IListItem
     {
         private ImageSource image;
 
@@ -30,31 +31,13 @@ namespace XamarinTodoApp.ViewModels.Shop
         }
 
         public RewardItem Item { get;  }
+
+        private bool isSelected;
+        public bool IsSelected
+        {
+            get => isSelected;
+            set => SetProperty(ref isSelected, value);
+        }
     }
 }
 
-
-
-/*void InitImages()
-        {
-            Assembly assem = Assembly.GetExecutingAssembly();
-            var folderName = "XamarinTodoApp.Resources.RewardIcons";
-            var fileNames = assem.GetManifestResourceNames().Where(r => r.StartsWith(folderName) && r.EndsWith(".png"));
-
-            var first = fileNames.ToList()[0];
-            SelectedImage = ImageSource.FromResource(first, typeof(NewRewardPage).GetTypeInfo().Assembly);
-
-
-            foreach (var file in fileNames)
-            {
-                var img = ImageSource.FromResource(file, typeof(NewRewardPage).GetTypeInfo().Assembly);
-                try
-                {
-                    Images.Add(img);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex);
-                }
-            }
-        }*/

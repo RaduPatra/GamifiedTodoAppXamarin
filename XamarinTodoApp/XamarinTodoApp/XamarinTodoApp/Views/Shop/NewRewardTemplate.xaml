@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="XamarinTodoApp.Views.Shop.NewRewardTemplate"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:helpers="clr-namespace:XamarinTodoApp.Helpers"
+    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:local="clr-namespace:XamarinTodoApp.ViewModels.Shop"
+    xmlns:popuplayout="clr-namespace:Syncfusion.XForms.PopupLayout;assembly=Syncfusion.SfPopupLayout.XForms"
+    xmlns:shop="clr-namespace:XamarinTodoApp.Views.Shop"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Name="NewReward"
+    ios:Page.UseSafeArea="true"
+    x:DataType="local:NewRewardBaseViewModel"
+    Shell.PresentationMode="ModalAnimated">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <popuplayout:SfPopupLayout
+                x:Key="selectIconDialog"
+                x:Name="selectIconPopup"
+                x:DataType="local:NewRewardViewModel">
+                <popuplayout:SfPopupLayout.PopupView>
+                    <popuplayout:PopupView
+                        HeaderHeight="50"
+                        HeaderTitle="Select an icon"
+                        HeightRequest="600"
+                        ShowCloseButton="False"
+                        ShowFooter="False"
+                        WidthRequest="300">
+
+                        <popuplayout:PopupView.ContentTemplate>
+                            <DataTemplate>
+                                <StackLayout>
+                                    <CollectionView ItemsLayout="VerticalGrid, 4" ItemsSource="{Binding BindingContext.Images, Source={x:Reference NewReward}}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Padding="10" x:DataType="helpers:ImageInfo">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="50" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="50" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <ImageButton
+                                                        Grid.RowSpan="2"
+                                                        BackgroundColor="Transparent"
+                                                        Command="{Binding BindingContext.ImageSelectedCommand, Source={x:Reference NewReward}}"
+                                                        CommandParameter="{Binding .}"
+                                                        HeightRequest="50"
+                                                        Source="{Binding ImgSource}"
+                                                        WidthRequest="50" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </StackLayout>
+                            </DataTemplate>
+                        </popuplayout:PopupView.ContentTemplate>
+                    </popuplayout:PopupView>
+                </popuplayout:SfPopupLayout.PopupView>
+            </popuplayout:SfPopupLayout>
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+
+
+    <!--<ContentPage.Content>-->
+
+
+
+
+
+
+    <StackLayout>
+        <Frame CornerRadius="10">
+
+            <StackLayout Padding="15" Spacing="3">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="Medium"
+                    Text="Reward Info" />
+                <StackLayout>
+
+                    <Image
+                        Margin="0"
+                        HeightRequest="60"
+                        Source="{Binding SelectedImage, Mode=TwoWay}"
+                        WidthRequest="60" />
+                    <!--<buttons:SfButton
+                            Margin="0"
+                            BackgroundColor="Black"
+                            Command="{Binding OpenPopupCommand}"
+                            CommandParameter="{StaticResource selectIconDialog}"
+                            HorizontalOptions="Center"
+                            Text="Change Icon" />-->
+
+
+                    <buttons:SfButton
+                        BackgroundColor="#EFF8FD"
+                        BorderColor="{StaticResource Key=Primary}"
+                        BorderWidth="1"
+                        Command="{Binding OpenPopupCommand}"
+                        CommandParameter="{StaticResource selectIconDialog}"
+                        CornerRadius="5"
+                        FontAttributes="Bold"
+                        HeightRequest="40"
+                        HorizontalOptions="CenterAndExpand"
+                        ShowIcon="True"
+                        Text="Change Icon"
+                        TextColor="{StaticResource Primary}" />
+
+
+
+                    <inputLayout:SfTextInputLayout
+                        ContainerType="Outlined"
+                        ErrorText="Text can't be empty"
+                        FocusedColor="Blue"
+                        HasError="{Binding HasNameError}"
+                        HelperText="Enter a reward name"
+                        Hint="Reward Name"
+                        HorizontalOptions="FillAndExpand"
+                        IsHintAlwaysFloated="FALSE"
+                        LeadingViewPosition="Inside">
+                        <Entry FontSize="Medium" Text="{Binding Text, Mode=TwoWay}" />
+                    </inputLayout:SfTextInputLayout>
+
+
+                    <inputLayout:SfTextInputLayout
+                        ContainerType="Outlined"
+                        FocusedColor="Blue"
+                        HelperText="Enter a reward description"
+                        Hint="Reward Description"
+                        HorizontalOptions="FillAndExpand"
+                        IsHintAlwaysFloated="FALSE"
+                        LeadingViewPosition="Inside">
+                        <Entry FontSize="Medium" Text="{Binding Description, Mode=TwoWay}" />
+                    </inputLayout:SfTextInputLayout>
+
+
+                    <inputLayout:SfTextInputLayout
+                        ContainerType="Outlined"
+                        ErrorText="Price can't be zero"
+                        FocusedColor="Blue"
+                        HasError="{Binding HasPriceError}"
+                        HelperText="Enter a reward price"
+                        
+                        Hint="Reward Price"
+                        HorizontalOptions="FillAndExpand"
+                        IsHintAlwaysFloated="FALSE"
+                        LeadingViewPosition="Inside">
+                        <Entry
+                            
+                            FontSize="Medium"
+                            Keyboard="Numeric"
+                            MaxLength="6"
+                            Text="{Binding Price, Mode=TwoWay}" />
+                    </inputLayout:SfTextInputLayout>
+                    <!--<Entry FontSize="Medium" Text="{Binding Text, Mode=TwoWay}" />-->
+
+
+
+
+                </StackLayout>
+            </StackLayout>
+
+        </Frame>
+
+        <StackLayout Orientation="Horizontal">
+            <Button
+                Margin="10"
+                Padding="10"
+                Command="{Binding CancelCommand}"
+                CornerRadius="30"
+                HeightRequest="40"
+                HorizontalOptions="FillAndExpand"
+                Text="CANCEL"
+                TextColor="White">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="1,0">
+                        <GradientStop Offset="0" Color="{StaticResource Primary}" />
+                        <GradientStop Offset="1" Color="#51F1F2" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+
+            <Button
+                Margin="10"
+                Padding="10"
+                Command="{Binding SaveCommand}"
+                CornerRadius="30"
+                HeightRequest="40"
+                HorizontalOptions="FillAndExpand"
+                Text="SAVE"
+                TextColor="White">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="1,0">
+                        <GradientStop Offset="0" Color="{StaticResource Primary}" />
+                        <GradientStop Offset="1" Color="#51F1F2" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+        </StackLayout>
+    </StackLayout>
+
+
+    <!--<Label Text="ffgfff" />
+        <Label FontSize="Medium" Text="Text" />
+        <Entry FontSize="Medium" Text="{Binding Text, Mode=TwoWay}" />
+        <Entry FontSize="Medium" Text="{Binding Description, Mode=TwoWay}" />
+
+        <Label FontSize="Medium" Text="Price" />
+        <Entry
+            FontSize="Medium"
+            Keyboard="Numeric"
+            Text="{Binding Price, Mode=TwoWay}" />
+
+        <StackLayout Orientation="Horizontal">
+            <Button
+                Command="{Binding CancelCommand}"
+                HorizontalOptions="FillAndExpand"
+                Text="Cancel" />
+            <Button
+                Command="{Binding SaveCommand}"
+                HorizontalOptions="FillAndExpand"
+                Text="Save" />
+        </StackLayout>
+
+        <Image
+            HeightRequest="80"
+            Source="{Binding SelectedImage, Mode=TwoWay}"
+            WidthRequest="80" />
+        <buttons:SfButton
+            BackgroundColor="Black"
+            Command="{Binding OpenPopupCommand}"
+            CommandParameter="{StaticResource selectIconDialog}"
+            HorizontalOptions="Center"
+            Text="Change Icon" />-->
+
+
+
+
+
+    <!--</ContentPage.Content>-->
+</ContentView>

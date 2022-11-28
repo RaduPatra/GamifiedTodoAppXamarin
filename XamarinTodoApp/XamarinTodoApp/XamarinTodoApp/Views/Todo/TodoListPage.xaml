@@ -3,22 +3,40 @@
     x:Class="XamarinTodoApp.Views.TodoListPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:cards="clr-namespace:Syncfusion.XForms.Cards;assembly=Syncfusion.Cards.XForms"
+    xmlns:contextview="clr-namespace:XamarinTodoApp.Views.General"
+    xmlns:converters="clr-namespace:XamarinTodoApp.Converters"
+    xmlns:general="clr-namespace:XamarinTodoApp.ViewModels.General"
     xmlns:local="clr-namespace:XamarinTodoApp.ViewModels"
     xmlns:model="clr-namespace:XamarinTodoApp.Models"
+    xmlns:sfList="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
     xmlns:todo="clr-namespace:XamarinTodoApp.ViewModels.Todo"
     xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
     x:Name="BrowseTodoPage"
-    Title="{Binding Title}"
+    Title="Todo List"
     x:DataType="local:TodoListViewModel"
-    BackgroundColor="WhiteSmoke">
-
+    BackgroundColor="WhiteSmoke"
+    Shell.NavBarIsVisible="{Binding ContextMenuVM.IsNavBarOn}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding AddItemCommand}" Text="Add" />
-        <ToolbarItem Command="{Binding TestCommand}" Text="AddTest" />
+        <!--<ToolbarItem Command="{Binding AddItemCommand}" Text="Add" />-->
+        <!--<ToolbarItem
+            Command="{Binding TestCommand}"
+            IconImageSource="icon_about.png"
+            Order="Secondary"
+            Text="AddTest" />-->
+
+        <ToolbarItem
+            Command="{Binding SortAlphabeticallyCommand}"
+            IconImageSource="icon_about.png"
+            Order="Secondary"
+            Text="A-Z Sort" />
     </ContentPage.ToolbarItems>
 
-
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior Command="{Binding PageAppearingCommand}" EventName="Appearing" />
+    </ContentPage.Behaviors>
     <!--<ContentPage.BindingContext>
         <local:TodoListViewModel />
     </ContentPage.BindingContext>-->
@@ -26,166 +44,322 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:MultiConverter x:Key="MultiConverter" />
+            <xct:IsNotNullOrEmptyConverter x:Key="IsNotNullOrEmptyConverter" />
+            <converters:IsNotZeroConverter x:Key="IsNotZeroConverter" />
+            <converters:NumberToColorConverter x:Key="NumberToColorConverter" />
+            <converters:BoolToColorConverter
+                x:Key="BoolToColorConverter"
+                DefaultColor="White"
+                SelectedColor="LightGray" />
+            <converters:FormatTimestampConverter x:Key="FormatTimestampConverter" />
+            <converters:DueDateToColorConverter x:Key="DueDateToColorConverter" />
             <xct:ItemSelectedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
         </ResourceDictionary>
+
+        <ControlTemplate x:Key="CardViewControlTemplate" />
     </ContentPage.Resources>
 
-    <!--<ActivityIndicator
-            AbsoluteLayout.LayoutBounds="0,0,1,1"
-            AbsoluteLayout.LayoutFlags="All"
-            HeightRequest="40"
-            IsRunning="{Binding CanCheck, Converter={xct:InvertedBoolConverter}}"
-            WidthRequest="40" />-->
-    <!--  Converter={xct:InvertedBoolConverter}  -->
-    <AbsoluteLayout>
-        <ActivityIndicator
-            AbsoluteLayout.LayoutBounds=".5,0,-1,1"
-            AbsoluteLayout.LayoutFlags="PositionProportional"
-            HeightRequest="40"
-            IsRunning="{Binding IsLoading}"
-            WidthRequest="40" />
-        <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
 
-            <Label Text="{Binding Coins, Source={StaticResource userDataVM}, StringFormat='Coins: {0}'}" />
-            <Button Command="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=SortAlphabeticallyCommand}" Text="A-Z" />
+    <StackLayout>
+        <AbsoluteLayout x:Name="layoutindex">
 
-            <!--<Label Text="Level" />
-            <Label Text="{Binding UserDataViewModel.Level, Mode=TwoWay}" />-->
-            <Label Text="Level" />
-            <Label Text="{Binding Level, Source={StaticResource userDataVM}, Mode=TwoWay}" />
-
-            <Label Text="CurrentExp" />
-            <Label Text="{Binding Experience, Source={StaticResource userDataVM}, Mode=TwoWay}" />
-
-            <Label Text="ExpToNextLvl" />
-            <Label Text="{Binding ExperienceToNextLevel, Source={StaticResource userDataVM}, Mode=TwoWay}" />
-
-            <ProgressBar Progress="{Binding Progress, Source={StaticResource userDataVM}, Mode=TwoWay}" ProgressColor="Red" />
+            <ActivityIndicator
+                AbsoluteLayout.LayoutBounds=".5,0,-1,1"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                HeightRequest="40"
+                IsRunning="{Binding IsLoading}"
+                WidthRequest="40" />
 
 
-            <RefreshView
-                x:DataType="local:TodoListViewModel"
-                Command="{Binding LoadItemsCommand}"
-                IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
 
-                <CollectionView
-                    x:Name="TodoListView"
-                    Margin="10,0,10,0"
-                    ItemsSource="{Binding Items}"
-                    SelectionMode="None">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
-                    </CollectionView.ItemsLayout>
-
-                    <CollectionView.ItemTemplate>
-
-                        <DataTemplate>
-                            <Frame
-                                Padding="1"
-                                x:DataType="todo:TodoItemViewModel"
-                                CornerRadius="10"
-                                HasShadow="True">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=ItemTapped}"
-                                        CommandParameter="{Binding .}"
-                                        NumberOfTapsRequired="1" />
-                                </Frame.GestureRecognizers>
-                                <Grid
-                                    Margin="5,5,5,5"
-                                    Padding="0"
-                                    RowSpacing="1">
+            <StackLayout
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                Spacing="0">
 
 
-                                    <Grid.RowDefinitions Height="20">
-                                        <RowDefinition Height="40" />
-                                        <RowDefinition Height="30" />
-                                    </Grid.RowDefinitions>
+                <contextview:ContextMenuView x:Name="contextToolbar" />
 
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="60" />
-                                    </Grid.ColumnDefinitions>
+                <RefreshView
+                    x:DataType="local:TodoListViewModel"
+                    Command="{Binding LoadItemsCommand}"
+                    IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
 
-                                    <CheckBox
-                                        Grid.Row="0"
-                                        Grid.RowSpan="2"
-                                        HorizontalOptions="Center"
-                                        IsChecked="{Binding IsChecked}"
-                                        IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=IsLoading, Converter={xct:InvertedBoolConverter}}"
-                                        VerticalOptions="Center">
+                    <StackLayout>
+                        <!--<Button Command="{Binding TestCommand}" Text="test" />-->
+
+                        <!--  mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm  -->
+                        <CollectionView
+                            Margin="10,0,10,0"
+                            IsGrouped="True"
+                            ItemsSource="{Binding ItemsGroup}"
+                            SelectionMode="None">
+
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.Header>
 
 
-                                        <!--
-                                            CheckedChanged="CheckBox_CheckedChanged"
-                                            Command="{Binding BindingContext.CheckedCommand, Source={x:Reference BrowseTodoPage}}"
-                                            CommandParameter="{Binding .}"
-                                        -->
-                                        <!--<CheckBox.Behaviors>
-                                            <xct:EventToCommandBehavior
-                                                Command="{Binding BindingContext.CheckedCommand, Source={x:Reference BrowseTodoPage}}"
-                                                CommandParameter="{Binding .}"
-                                                EventName="CheckedChanged" />
+                                <StackLayout Padding="0,10,0,0" Orientation="Horizontal">
 
-                                        </CheckBox.Behaviors>-->
-
-                                    </CheckBox>
+                                    <!--<Frame ></Frame>-->
+                                    <Image HeightRequest="25" Source="{xct:ImageResource XamarinTodoApp.Resources.Other.swords.png}" />
                                     <Label
-                                        Grid.Row="0"
-                                        Grid.Column="1"
-                                        Padding="10,10,10,10"
+                                        FontAttributes="Bold"
                                         FontSize="18"
-                                        Text="{Binding Item.Text}"
-                                        VerticalOptions="Center" />
+                                        Text="{Binding Level, Source={StaticResource userDataVM}, StringFormat='Level: {0}'}"
+                                        TextColor="{StaticResource Primary}" />
 
+                                    <Image
+                                        HeightRequest="25"
+                                        HorizontalOptions="EndAndExpand"
+                                        Source="{xct:ImageResource XamarinTodoApp.Resources.Other.dollar.png}" />
                                     <Label
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Padding="10,5,5,5"
-                                        FontSize="14"
-                                        Text="{Binding Item.Reward}"
-                                        VerticalOptions="Center" />
+                                        FontAttributes="Bold"
+                                        FontSize="18"
+                                        Text="{Binding Coins, Source={StaticResource userDataVM}}"
+                                        TextColor="DarkOrange" />
 
+                                </StackLayout>
+
+
+
+                            </CollectionView.Header>
+                            <CollectionView.ItemTemplate>
+
+                                <DataTemplate x:DataType="todo:TodoItemViewModel">
+                                    <cards:SfCardView
+                                        Margin="2"
+                                        Padding="1"
+                                        x:DataType="todo:TodoItemViewModel"
+                                        xct:TouchEffect.Command="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=ItemTapped}"
+                                        xct:TouchEffect.LongPressCommand="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=ContextMenuVM.LongPressCommand}"
+                                        xct:TouchEffect.LongPressDuration="1000"
+                                        xct:TouchEffect.NativeAnimation="True"
+                                        xct:TouchEffect.ShouldMakeChildrenInputTransparent="False"
+                                        BackgroundColor="{Binding IsSelected, Converter={StaticResource BoolToColorConverter}}"
+                                        IndicatorColor="{Binding Item.Difficulty, Converter={StaticResource NumberToColorConverter}}"
+                                        IndicatorPosition="Left"
+                                        IndicatorThickness="6">
+
+                                        <xct:TouchEffect.CommandParameter>
+                                            <Binding Path="." />
+                                        </xct:TouchEffect.CommandParameter>
+
+                                        <xct:TouchEffect.LongPressCommandParameter>
+                                            <MultiBinding Converter="{StaticResource MultiConverter}">
+                                                <Binding Source="{x:Reference contextToolbar}" />
+                                                <Binding Path="." />
+                                            </MultiBinding>
+                                        </xct:TouchEffect.LongPressCommandParameter>
+
+
+
+
+                                        <Grid
+                                            Margin="0"
+                                            Padding="0"
+                                            RowSpacing="1">
+
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="30" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="120" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!--<BoxView Grid.Row="0" Color="Green"></BoxView>
+                                            <BoxView Grid.Row="0" Grid.Column="1" Color="Green"></BoxView>-->
+                                            <CheckBox
+                                                Grid.Row="0"
+                                                Margin="0,5,0,0"
+                                                HeightRequest="40"
+                                                HorizontalOptions="Center"
+                                                IsChecked="{Binding IsChecked}"
+                                                IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=IsLoading, Converter={xct:InvertedBoolConverter}}"
+                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=ContextMenuVM.IsNavBarOn}"
+                                                VerticalOptions="Start"
+                                                WidthRequest="40"
+                                                Color="{StaticResource Primary}" />
+
+
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Margin="0,10,0,0"
+                                                FontSize="16"
+                                                LineBreakMode="TailTruncation"
+                                                MaxLines="3"
+                                                Text="{Binding Item.Text}"
+                                                VerticalOptions="Center" />
+
+                                            <Label
+                                                Grid.Row="2"
+                                                Grid.Column="1"
+                                                Grid.ColumnSpan="2"
+                                                Margin="0"
+                                                IsVisible="True"
+                                                LineBreakMode="TailTruncation"
+                                                MaxLines="5"
+                                                Text="{Binding Item.Description}" />
+
+
+                                            <CollectionView
+                                                Grid.Row="0"
+                                                Grid.Column="2"
+                                                HeightRequest="40"
+                                                HorizontalOptions="End"
+                                                ItemsLayout="HorizontalList"
+                                                ItemsSource="{Binding TodoAttributes}"
+                                                WidthRequest="120">
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate x:DataType="todo:TodoAttributeViewModel">
+                                                        <StackLayout Spacing="10">
+                                                            <Image
+                                                                Margin="5"
+                                                                HeightRequest="30"
+                                                                Source="{Binding Image}" />
+                                                        </StackLayout>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+
+                                            </CollectionView>
+
+
+
+
+                                            <StackLayout
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Grid.ColumnSpan="2"
+                                                Orientation="Horizontal"
+                                                Spacing="5">
+
+                                                <Image HeightRequest="25" Source="{xct:ImageResource XamarinTodoApp.Resources.Other.dollar.png}" />
+                                                <Label
+                                                    Margin="0,0,10,0"
+                                                    Padding="0"
+                                                    FontAttributes="Bold"
+                                                    Text="{Binding Item.Reward}"
+                                                    TextColor="DarkOrange"
+                                                    VerticalOptions="Center" />
+
+                                                <Image HeightRequest="25" Source="coin.png" />
+                                                <Label
+                                                    Margin="0,0,10,0"
+                                                    Padding="0"
+                                                    FontAttributes="Bold"
+                                                    Text="{Binding Item.ExpReward}"
+                                                    TextColor="DarkOrange"
+                                                    VerticalOptions="Center" />
+
+                                                <Image
+                                                    Margin="0"
+                                                    HeightRequest="25"
+                                                    IsVisible="{Binding ItemDueDate, Converter={StaticResource IsNotNullOrEmptyConverter}}"
+                                                    Source="{xct:ImageResource XamarinTodoApp.Resources.Other.chronometer.png}" />
+                                                <Label
+                                                    Margin="0"
+                                                    Padding="0"
+                                                    Text="{Binding ItemDueDate, Converter={StaticResource FormatTimestampConverter}}"
+                                                    TextColor="{Binding Item, Converter={StaticResource DueDateToColorConverter}}"
+                                                    VerticalOptions="Center" />
+
+                                                <Image
+                                                    Margin="0"
+                                                    xct:IconTintColorEffect.TintColor="Gray"
+                                                    HeightRequest="15"
+                                                    IsVisible="{Binding Item.RepeatFrequency, Converter={StaticResource IsNotZeroConverter}}"
+                                                    Source="{xct:ImageResource XamarinTodoApp.Resources.Other.repeat.png}" />
+                                                <!--<Label Text="10.10"></Label>-->
+
+                                                <!--<Label Text="Difficulty" />
+                                                <Label Text="{Binding Item.Difficulty}" />-->
+
+
+                                                <!--<Label Text="Attributes" />-->
+
+
+                                            </StackLayout>
+
+                                            <!--<Button
+                                            Grid.Row="0"
+                                            Grid.RowSpan="2"
+                                            Grid.Column="2"
+                                            BackgroundColor="LightGray"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=DeleteItemCommand}"
+                                            CommandParameter="{Binding .}"
+                                            HeightRequest="40"
+                                            HorizontalOptions="Center"
+                                            Text="Del"
+                                            VerticalOptions="Center"
+                                            WidthRequest="70" />-->
+                                        </Grid>
+                                    </cards:SfCardView>
+
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+
+                            <CollectionView.GroupHeaderTemplate>
+                                <DataTemplate x:DataType="todo:TodoGroup">
                                     <Label
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Padding="10,5,5,5"
-                                        FontSize="14"
-                                        HorizontalTextAlignment="End"
-                                        Text="{Binding Item.ExpReward}"
-                                        VerticalOptions="Center" />
+                                        BackgroundColor="Transparent"
+                                        FontAttributes="Bold"
+                                        FontSize="Large"
+                                        Text="{Binding GroupName}" />
+                                </DataTemplate>
+                            </CollectionView.GroupHeaderTemplate>
+                        </CollectionView>
 
-                                    <Button
-                                        Grid.Row="0"
-                                        Grid.RowSpan="2"
-                                        Grid.Column="2"
-                                        BackgroundColor="LightGray"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=DeleteItemCommand}"
-                                        CommandParameter="{Binding .}"
-                                        HeightRequest="40"
-                                        HorizontalOptions="Center"
-                                        Text="Del"
-                                        VerticalOptions="Center"
-                                        WidthRequest="70" />
+                        <!--  mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm  -->
+
+                    </StackLayout>
 
 
-                                </Grid>
-                            </Frame>
+                </RefreshView>
 
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </RefreshView>
+            </StackLayout>
+            <buttons:SfButton
+                AbsoluteLayout.LayoutBounds=".98,.98,-1,1"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                BackgroundColor="{StaticResource Primary}"
+                Command="{Binding AddItemCommand}"
+                CornerRadius="100"
+                HasShadow="false"
+                HeightRequest="60"
+                HorizontalOptions="Center"
+                ImageWidth="50"
+                ShadowColor="black"
+                ShowIcon="True"
+                VerticalOptions="Center"
+                WidthRequest="60">
+                <buttons:SfButton.Image>
 
-        </StackLayout>
-    </AbsoluteLayout>
+                    <Image
+                        xct:IconTintColorEffect.TintColor="White"
+                        xct:TouchEffect.NativeAnimation="True"
+                        Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Other.plus2.png}" />
+                </buttons:SfButton.Image>
+            </buttons:SfButton>
+
+        </AbsoluteLayout>
+
+
+
+
+
+    </StackLayout>
 </ContentPage>
-
-
-
-
-
 
 
 

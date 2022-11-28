@@ -16,5 +16,7 @@ namespace XamarinTodoApp.Models
         public int Coins { get; set; }
         [FirestoreProperty]
         public LevelData LevelData { get; set; }
+        [FirestoreProperty]
+        public List<StatAttribute> StatAttributes { get; set; } = new List<StatAttribute>();
     }
 }

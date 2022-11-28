@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using XamarinTodoApp.Services.Interfaces;
 
 namespace XamarinTodoApp.Models
 {
     [FirestoreData]
-    public class LevelData
+    public class LevelData : IAttribute
     {
 
         [FirestoreProperty]

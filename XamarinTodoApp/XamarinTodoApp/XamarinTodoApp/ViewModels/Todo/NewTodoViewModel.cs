@@ -1,83 +1,150 @@
-﻿using Firebase.Database;
-using Google.Cloud.Firestore;
+﻿using Google.Cloud.Firestore;
+using Plugin.LocalNotification;
 using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
-
+using XamarinTodoApp.CustomControls;
 using XamarinTodoApp.Models;
 using XamarinTodoApp.Services;
-using XamarinTodoApp.Views;
+using XamarinTodoApp.ViewModels.Attribute;
+using XamarinTodoApp.ViewModels.General;
 
 namespace XamarinTodoApp.ViewModels.Todo
 {
-    public class NewTodoViewModel : ViewModelBase
+    public class NewTodoViewModel : NewTodoBaseViewModel
     {
-        private string text;
-        private string reward;
-        private string experienceReward;
+
 
         public NewTodoViewModel()
         {
-            SaveCommand = new Command(OnSave, ValidateSave);
-            CancelCommand = new Command(OnCancel);
-            this.PropertyChanged +=
-                (_, __) => SaveCommand.ChangeCanExecute();
+            TodoAttributes = new List<TodoAttribute>();
         }
 
-        private bool ValidateSave()
+
+        //public List<TodoAttribute> TodoAttributes { get; set; }
+
+        public override async Task OnAppearing()
         {
-            return !String.IsNullOrWhiteSpace(text)
-                && !String.IsNullOrWhiteSpace(reward);
+            //DueDate = DateTime.Now.Date;
+            await base.OnAppearing();
+            SelectedDifficulty = 1;
+            SelectedDifficulty = 1;
+            SelectedRepeatFrequency = "";
+            DifficultyTrivial = true;
+            TodoAttributes.Clear();
+
+            await LoadAttributes();
+
+            GetAutoCoinReward();
+            GetAutoExpReward();
+
+            DueDate = null;
+
+            IsBusy = false;
         }
 
-        public string Text
+
+        private async Task LoadAttributes()
         {
-            get => text;
-            set => SetProperty(ref text, value);
+            //SelectFilter(FilterType.BlackAndWhite);
+            var userData = App.Current.Resources["userDataVM"] as UserDataViewModel;//?
+            foreach (var item in userData.Attributes)
+            {
+                item.IsSelected = false;
+                //SelectFilter(FilterType.BlackAndWhite);
+            }
         }
-
-        public string Reward
+        public override async void OnSave()
         {
-            get => reward;
-            set => SetProperty(ref reward, value);
-        }
+            DateTime creationDate = DateTime.Now.ToUniversalTime();
 
-        public string ExpReward
-        {
-            get => experienceReward;
-            set => SetProperty(ref experienceReward, value);
-        }
+            Timestamp? dueDateTimestamp = null;
+            Timestamp? reminderDateTimestamp = null;
 
-        public Command SaveCommand { get; }
-        public Command CancelCommand { get; }
+            if (DueDate.HasValue)
+            {
+                DateTime? dueDate = DueDate.Value.ToUniversalTime();
+                dueDateTimestamp = Timestamp.FromDateTime(dueDate.Value);
+            }
 
-        private async void OnCancel()
-        {
-            // This will pop the current page off the navigation stack
-            await Shell.Current.GoToAsync("..");
-        }
+            if (ReminderDate.HasValue)
+            {
+                DateTime? reminderDate = ReminderDate.Value.ToUniversalTime();
+                reminderDateTimestamp = Timestamp.FromDateTime(reminderDate.Value);
+            }
 
-        private async void OnSave()
-        {
-            var fbkey = FirebaseKeyGenerator.Next();
-            DateTime date = DateTime.Now.ToUniversalTime();
+            var testDueTimestamp = Timestamp.FromDateTime(DateTime.Now.ToUniversalTime().AddSeconds(10));
+
+            int repFreq;
+            NotificationRepeat repeatType;
+            if (SelectedRepeatFrequency == "")
+            {
+                repFreq = 0;
+                repeatType = NotificationRepeat.No;
+            }
+            else
+            {
+                repFreq = int.Parse(SelectedRepeatFrequency);
+                repeatType = NotificationRepeat.TimeInterval;
+            }
+
+            var notificationId = (int)(DateTime.Now.Ticks >> 10);
             TodoItem newItem = new TodoItem()
             {
                 Id = "",
                 Text = Text,
+                Description = Description,
                 IsDone = false,
                 Reward = int.Parse(Reward),
                 ExpReward = int.Parse(ExpReward),
-                CreationDate = Timestamp.FromDateTime(date)
+                CreationDate = Timestamp.FromDateTime(creationDate),
+                Difficulty = SelectedDifficulty,
+                StatAttributes = TodoAttributes,
+                DueDate = dueDateTimestamp,
+                ReminderDate = reminderDateTimestamp,
+                RepeatFrequency = repFreq,
+                HasCustomCoinReward = IsCoinEntryEnabled,
+                HasCustomExpReward = IsExpEntryEnabled,
+                NotificationId = notificationId
             };
 
-            await TodoStore.AddItemAsync(newItem);
+            //NotificationCenter.Current.CancelAll();
+            //var repeatType = NotificationRepeat.No;
+
+            if (ReminderDate.HasValue)
+            {
+                var notification = new NotificationRequest
+                {
+                    BadgeNumber = 1,
+                    Description = Text,
+                    Title = "Reminder",
+                    //ReturningData = "Dummy Data",
+                    NotificationId = notificationId,
+
+                    Schedule =
+                    {
+                        NotifyTime = ReminderDate,
+                        RepeatType = repeatType,
+                        NotifyRepeatInterval = new TimeSpan(24 * repFreq, 0,0)
+                    }
+                };
+                await NotificationCenter.Current.Show(notification);
+            }
+
+            // await TodoStore.AddItemAsync(newItem);
+            await TodoStore.AddTodoAsync(newItem, AuthService.UserInfo.LocalId);
 
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("..");
+        }
+
+        private bool ValidateSave()
+        {
+            return !String.IsNullOrWhiteSpace(Text)
+                && !String.IsNullOrWhiteSpace(Reward);
         }
     }
 }

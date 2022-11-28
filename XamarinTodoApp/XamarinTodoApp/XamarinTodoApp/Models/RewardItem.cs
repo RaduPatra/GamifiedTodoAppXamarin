@@ -16,6 +16,9 @@ namespace XamarinTodoApp.Models
         public string Text { get; set; }
 
         [FirestoreProperty]
+        public string Description { get; set; }
+
+        [FirestoreProperty]
         public int Price { get; set; }
 
         [FirestoreProperty]
@@ -23,5 +26,7 @@ namespace XamarinTodoApp.Models
 
         [FirestoreProperty]
         public Timestamp CreationDate { get; set; }
+        [FirestoreProperty]
+        public DocumentReference CreatedBy { get; set; }
     }
 }

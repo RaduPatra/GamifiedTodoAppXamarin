@@ -5,7 +5,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:XamarinTodoApp.ViewModels.Shop"
     xmlns:model="clr-namespace:XamarinTodoApp.Models"
-    x:DataType="local:RewardInventoryViewModel">
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    Title="Inventory"
+    x:DataType="local:RewardInventoryViewModel"
+    BackgroundColor="WhiteSmoke"
+    Shell.NavBarIsVisible="True">
 
 
     <StackLayout>
@@ -16,19 +20,44 @@
 
             <CollectionView
                 x:Name="RewardInventoryView"
-                Margin="10,0,10,0"
+                Margin="10"
                 ItemsSource="{Binding Items}"
                 SelectionMode="None">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
                 </CollectionView.ItemsLayout>
+                <CollectionView.Header>
 
+                    <StackLayout Padding="0,0,0,0" Orientation="Horizontal">
+
+                        <!--<Frame ></Frame>-->
+                        <Image HeightRequest="25" Source="{xct:ImageResource XamarinTodoApp.Resources.Other.swords.png}" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            Text="{Binding Level, Source={StaticResource userDataVM}, StringFormat='Level: {0}'}"
+                            TextColor="{StaticResource Primary}" />
+
+                        <Image
+                            HeightRequest="25"
+                            HorizontalOptions="EndAndExpand"
+                            Source="{xct:ImageResource XamarinTodoApp.Resources.Other.dollar.png}" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            Text="{Binding Coins, Source={StaticResource userDataVM}}"
+                            TextColor="DarkOrange" />
+
+
+                    </StackLayout>
+
+                </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame
                             Padding="1"
                             x:DataType="local:InventoryItemViewModel"
-                            CornerRadius="10"
+                            CornerRadius="20"
                             HasShadow="True">
                             <!--<Frame.GestureRecognizers>
                                 <TapGestureRecognizer
@@ -42,7 +71,7 @@
                                 RowSpacing="1">
 
 
-                                <Grid.RowDefinitions Height="20">
+                                <Grid.RowDefinitions>
                                     <RowDefinition Height="40" />
                                     <RowDefinition Height="30" />
                                 </Grid.RowDefinitions>
@@ -57,6 +86,7 @@
                                 <Image
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
+                                    HeightRequest="50"
                                     HorizontalOptions="Center"
                                     Source="{Binding RewardItemVM.Image}"
                                     VerticalOptions="Center" />
@@ -65,8 +95,8 @@
                                 <Label
                                     Grid.Row="0"
                                     Grid.Column="1"
-                                    Padding="10,10,10,10"
-                                    FontSize="18"
+                                    Padding="10,0,0,0"
+                                    FontSize="16"
                                     Text="{Binding Item.RewardItem.Text}"
                                     VerticalOptions="Center" />
 
@@ -82,17 +112,25 @@
 
                                 <!--  buy button  -->
                                 <Button
-                                        Grid.Row="0"
-                                        Grid.RowSpan="2"
-                                        Grid.Column="2"
-                                        BackgroundColor="LightGray"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:RewardInventoryViewModel}}, Path=UseItemTapped}"
-                                        CommandParameter="{Binding .}"
-                                        HeightRequest="40"
-                                        HorizontalOptions="Center"
-                                        Text="Use"
-                                        VerticalOptions="Center"
-                                        WidthRequest="70" />
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="2"
+                                    BackgroundColor="LightGray"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:RewardInventoryViewModel}}, Path=UseItemTapped}"
+                                    CommandParameter="{Binding .}"
+                                    CornerRadius="20"
+                                    HeightRequest="40"
+                                    HorizontalOptions="Center"
+                                    Text="Use"
+                                    VerticalOptions="Center"
+                                    WidthRequest="70">
+                                    <Button.Background>
+                                        <LinearGradientBrush EndPoint="1,0">
+                                            <GradientStop Offset="0" Color="FloralWhite" />
+                                            <GradientStop Offset="1" Color="Gray" />
+                                        </LinearGradientBrush>
+                                    </Button.Background>
+                                </Button>
                                 <!--<Frame
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
@@ -108,7 +146,9 @@
 
                                     </Frame.GestureRecognizers>
                                     <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                        --><!--  placeholder coin icon  --><!--
+                                -->
+                                <!--  placeholder coin icon  -->
+                                <!--
                                         <Image Source="coin.png" WidthRequest="25" />
                                         <Label HorizontalOptions="Center" Text="{Binding Item.RewardItem.Price}" />
                                     </StackLayout>

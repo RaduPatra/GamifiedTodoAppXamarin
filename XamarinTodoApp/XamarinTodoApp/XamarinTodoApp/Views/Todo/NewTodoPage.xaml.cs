@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XamarinTodoApp.ViewModels;
 using XamarinTodoApp.ViewModels.Todo;
+using System.ComponentModel;
+
 
 namespace XamarinTodoApp.Views.Todo
 {
@@ -17,7 +18,8 @@ namespace XamarinTodoApp.Views.Todo
         public NewTodoPage()
         {
             InitializeComponent();
-            BindingContext = new NewTodoViewModel();
+            //BindingContext = new NewTodoViewModel();
         }
+
     }
 }

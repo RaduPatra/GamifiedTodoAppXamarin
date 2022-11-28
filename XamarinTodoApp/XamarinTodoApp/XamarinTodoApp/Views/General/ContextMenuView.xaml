@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Frame
+    x:Class="XamarinTodoApp.Views.General.ContextMenuView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:general="clr-namespace:XamarinTodoApp.ViewModels.General"
+    xmlns:ignore="http://www.galasoft.ch/ignore"
+    xmlns:interfaces="clr-namespace:XamarinTodoApp.Services.Interfaces"
+    xmlns:local="clr-namespace:XamarinTodoApp.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Name="contextToolbar"
+    Margin="0"
+    Padding="0"
+    BackgroundColor="{StaticResource Primary}"
+    HeightRequest="67"
+    IsVisible="False"
+    mc:Ignorable="ignore">
+
+    <StackLayout
+        Margin="0"
+        Padding="0"
+        Orientation="Horizontal"
+        Spacing="5">
+        <buttons:SfButton
+            x:Name="contextCloseButton"
+            Margin="0"
+            BackgroundColor="{StaticResource Primary}"
+            Command="{Binding ContextMenuVM.CloseContextMenuCommand}"
+            FontSize="20"
+            HorizontalOptions="Start"
+            IsVisible="true"
+            ShowIcon="True">
+
+            <buttons:SfButton.Image>
+                <Image xct:IconTintColorEffect.TintColor="White" Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Other.cancel2.png}" />
+            </buttons:SfButton.Image>
+
+            <buttons:SfButton.CommandParameter>
+                <Binding Source="{x:Reference contextToolbar}" />
+            </buttons:SfButton.CommandParameter>
+        </buttons:SfButton>
+
+
+        <Label
+            Margin="0"
+            Padding="0"
+            FontAttributes="Bold"
+            FontSize="Medium"
+            HorizontalOptions="Start"
+            Text="{Binding ContextMenuVM.ItemsSelectedCount}"
+            TextColor="White"
+            VerticalOptions="Center" />
+        <Label
+            Margin="0"
+            Padding="0"
+            FontAttributes="Bold"
+            FontSize="Medium"
+            HorizontalOptions="StartAndExpand"
+            Text="items selected"
+            TextColor="White"
+            VerticalOptions="Center" />
+        <buttons:SfButton
+            x:Name="contextDeleteButton"
+            Margin="0"
+            Padding="0"
+            BackgroundColor="{StaticResource Primary}"
+            Command="{Binding ContextMenuVM.DeleteSelectedCommand}"
+            FontSize="24"
+            HorizontalOptions="End"
+            IsVisible="true"
+            ShowIcon="True">
+
+            <buttons:SfButton.Image>
+                <Image xct:IconTintColorEffect.TintColor="White" Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Other.bin.png}" />
+            </buttons:SfButton.Image>
+        </buttons:SfButton>
+    </StackLayout>
+</Frame>

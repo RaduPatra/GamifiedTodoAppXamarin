@@ -1,0 +1,629 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="XamarinTodoApp.Views.Todo.NewTodoTemplate"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:converters="clr-namespace:XamarinTodoApp.Converters"
+    xmlns:custom="clr-namespace:XamarinTodoApp.CustomControls"
+    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:local="clr-namespace:XamarinTodoApp.ViewModels.Todo"
+    xmlns:model="clr-namespace:XamarinTodoApp.Models"
+    xmlns:stat="clr-namespace:XamarinTodoApp.ViewModels.Attribute"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Name="NewTodo"
+    ios:Page.UseSafeArea="true"
+    x:DataType="local:NewTodoBaseViewModel"
+    BackgroundColor="WhiteSmoke"
+    Shell.NavBarIsVisible="true"
+    Shell.TabBarIsVisible="False">
+
+
+    <!--<ContentView.BindingContext>
+        <local:NewTodoViewModel />
+    </ContentView.BindingContext>-->
+
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding TestCommand}" Text="Test" />
+    </ContentPage.ToolbarItems>-->
+
+
+    <!--<ContentView.Behaviors>
+        <xct:EventToCommandBehavior Command="{Binding PageAppearingCommand}" EventName="Appearing" />
+    </ContentView.Behaviors>-->
+
+    <ContentView.Resources>
+
+        <ResourceDictionary>
+            <converters:MultiConverter x:Key="MultiConverter" />
+            <xct:IsNotNullOrEmptyConverter x:Key="IsNotNullOrEmptyConverter" />
+            <xct:BoolToObjectConverter
+                x:Key="BoolToObjectConverter"
+                FalseObject="custom"
+                TrueObject="auto" />
+            <converters:FirstCharactersConverter x:Key="FirstCharactersConverter" />
+            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:BoolToColorConverter
+                x:Key="BoolToColorConverter"
+                DefaultColor="Black"
+                SelectedColor="Red" />
+            <converters:BoolToColorConverter
+                x:Key="BoolToColorConverter2"
+                DefaultColor="Transparent"
+                SelectedColor="{StaticResource Primary}" />
+            <converters:BoolToColorConverter
+                x:Key="BoolToColorConverter3"
+                DefaultColor="LightGray"
+                SelectedColor="{StaticResource Primary}" />
+            <converters:BoolToColorConverter
+                x:Key="BoolToColorConverter4"
+                DefaultColor="gray"
+                SelectedColor="{StaticResource Primary}" />
+            <converters:BoolToColorConverter
+                x:Key="BoolToColorConverter5"
+                DefaultColor="Transparent"
+                SelectedColor="#EFF8FD" />
+
+            <converters:ValueConverterGroup x:Key="ValueConverterGroup1">
+                <xct:InvertedBoolConverter />
+                <converters:BoolToColorConverter DefaultColor="Transparent" SelectedColor="#EFF8FD" />
+            </converters:ValueConverterGroup>
+
+            <converters:ValueConverterGroup x:Key="ValueConverterGroup2">
+                <xct:InvertedBoolConverter />
+                <converters:BoolToColorConverter DefaultColor="gray" SelectedColor="{StaticResource Primary}" />
+            </converters:ValueConverterGroup>
+            <converters:ValueConverterGroup x:Key="ValueConverterGroup3">
+                <xct:InvertedBoolConverter />
+                <xct:BoolToObjectConverter FalseObject="custom" TrueObject="auto" />
+            </converters:ValueConverterGroup>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <ContentView.Content>
+        <ScrollView>
+            <StackLayout>
+
+                <Frame
+                    Margin="10"
+                    BackgroundColor="White"
+                    CornerRadius="10">
+                    <StackLayout>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="Medium"
+                            Text="Info" />
+                        <StackLayout Margin="10,0,0,0">
+                            <inputLayout:SfTextInputLayout
+                                ContainerType="Outlined"
+                                ErrorText="Title can't be empty"
+                                FocusedColor="Blue"
+                                HasError="{Binding HasNameError}"
+                                HelperText="Enter a title"
+                                Hint="Task Title"
+                                HorizontalOptions="FillAndExpand"
+                                IsHintAlwaysFloated="FALSE"
+                                LeadingViewPosition="Inside">
+                                <Entry Text="{Binding Text, Mode=TwoWay}" />
+                            </inputLayout:SfTextInputLayout>
+
+                            <inputLayout:SfTextInputLayout
+                                ContainerType="Outlined"
+                                ErrorText="Enter a valid description"
+                                FocusedColor="Blue"
+                                HasError="False"
+                                HelperText="Enter a description"
+                                Hint="Task Notes"
+                                HorizontalOptions="FillAndExpand"
+                                IsHintAlwaysFloated="FALSE"
+                                LeadingViewPosition="Inside">
+                                <Editor AutoSize="TextChanges" Text="{Binding Description, Mode=TwoWay}" />
+                            </inputLayout:SfTextInputLayout>
+                        </StackLayout>
+
+                    </StackLayout>
+                </Frame>
+
+                <Frame
+                    Margin="10,0,10,0"
+                    BackgroundColor="white"
+                    CornerRadius="10">
+
+                    <StackLayout>
+                        <Label
+                            Margin="0,0,0,20"
+                            FontAttributes="Bold"
+                            FontSize="Medium"
+                            Text="Reward" />
+
+                        <StackLayout Margin="10,0,10,0">
+                            <Label Text="Difficulty" />
+                            <StackLayout Orientation="Horizontal">
+                                <buttons:SfButton
+                                    BackgroundColor="{Binding DifficultyTrivial, Converter={StaticResource BoolToColorConverter5}}"
+                                    BorderColor="{Binding DifficultyTrivial, Converter={StaticResource BoolToColorConverter4}}"
+                                    BorderWidth="1"
+                                    Command="{Binding ChangeDifficultyCommand}"
+                                    CornerRadius="5"
+                                    HeightRequest="45"
+                                    HorizontalOptions="CenterAndExpand"
+                                    ShowIcon="True"
+                                    TextColor="{Binding DifficultyTrivial, Converter={StaticResource BoolToColorConverter4}}"
+                                    WidthRequest="45">
+                                    <buttons:SfButton.CommandParameter>
+                                        <x:Int32>1</x:Int32>
+                                    </buttons:SfButton.CommandParameter>
+                                    <buttons:SfButton.Image>
+                                        <Image
+                                            xct:IconTintColorEffect.TintColor="{Binding DifficultyTrivial, Converter={StaticResource BoolToColorConverter4}}"
+                                            HeightRequest="20"
+                                            HorizontalOptions="Center"
+                                            Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Stars.oneStar.png}"
+                                            VerticalOptions="Center"
+                                            WidthRequest="30" />
+                                    </buttons:SfButton.Image>
+
+                                </buttons:SfButton>
+
+                                <buttons:SfButton
+                                    BackgroundColor="{Binding DifficultyEasy, Converter={StaticResource BoolToColorConverter5}}"
+                                    BorderColor="{Binding DifficultyEasy, Converter={StaticResource BoolToColorConverter4}}"
+                                    BorderWidth="1"
+                                    Command="{Binding ChangeDifficultyCommand}"
+                                    CornerRadius="5"
+                                    HeightRequest="45"
+                                    HorizontalOptions="CenterAndExpand"
+                                    ImageWidth="35"
+                                    ShowIcon="True"
+                                    TextColor="{Binding DifficultyEasy, Converter={StaticResource BoolToColorConverter4}}"
+                                    WidthRequest="45">
+                                    <buttons:SfButton.CommandParameter>
+                                        <x:Int32>2</x:Int32>
+                                    </buttons:SfButton.CommandParameter>
+                                    <buttons:SfButton.Image>
+                                        <Image
+                                            xct:IconTintColorEffect.TintColor="{Binding DifficultyEasy, Converter={StaticResource BoolToColorConverter4}}"
+                                            HorizontalOptions="Center"
+                                            Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Stars.twoStar2.png}"
+                                            VerticalOptions="Center" />
+                                    </buttons:SfButton.Image>
+                                </buttons:SfButton>
+
+                                <buttons:SfButton
+                                    BackgroundColor="{Binding DifficultyMedium, Converter={StaticResource BoolToColorConverter5}}"
+                                    BorderColor="{Binding DifficultyMedium, Converter={StaticResource BoolToColorConverter4}}"
+                                    BorderWidth="1"
+                                    Command="{Binding ChangeDifficultyCommand}"
+                                    CornerRadius="5"
+                                    HeightRequest="45"
+                                    HorizontalOptions="CenterAndExpand"
+                                    ImageWidth="35"
+                                    ShowIcon="True"
+                                    TextColor="{Binding DifficultyMedium, Converter={StaticResource BoolToColorConverter4}}"
+                                    WidthRequest="45">
+                                    <buttons:SfButton.CommandParameter>
+                                        <x:Int32>3</x:Int32>
+                                    </buttons:SfButton.CommandParameter>
+                                    <buttons:SfButton.Image>
+                                        <Image
+                                            xct:IconTintColorEffect.TintColor="{Binding DifficultyMedium, Converter={StaticResource BoolToColorConverter4}}"
+                                            HorizontalOptions="Center"
+                                            Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Stars.threeStar.png}"
+                                            VerticalOptions="Center" />
+                                    </buttons:SfButton.Image>
+                                </buttons:SfButton>
+
+                                <buttons:SfButton
+                                    BackgroundColor="{Binding DifficultyHard, Converter={StaticResource BoolToColorConverter5}}"
+                                    BorderColor="{Binding DifficultyHard, Converter={StaticResource BoolToColorConverter4}}"
+                                    BorderWidth="1"
+                                    Command="{Binding ChangeDifficultyCommand}"
+                                    CornerRadius="5"
+                                    HeightRequest="45"
+                                    HorizontalOptions="CenterAndExpand"
+                                    ShowIcon="True"
+                                    TextColor="{Binding DifficultyHard, Converter={StaticResource BoolToColorConverter4}}"
+                                    WidthRequest="45">
+                                    <buttons:SfButton.CommandParameter>
+                                        <x:Int32>4</x:Int32>
+                                    </buttons:SfButton.CommandParameter>
+                                    <buttons:SfButton.Image>
+                                        <Image
+                                            xct:IconTintColorEffect.TintColor="{Binding DifficultyHard, Converter={StaticResource BoolToColorConverter4}}"
+                                            HeightRequest="40"
+                                            HorizontalOptions="Center"
+                                            Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Stars.fourStar.png}"
+                                            VerticalOptions="Center"
+                                            WidthRequest="40" />
+                                    </buttons:SfButton.Image>
+                                </buttons:SfButton>
+                            </StackLayout>
+
+
+                            <Grid Margin="0" ColumnSpacing="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="65" />
+                                    <RowDefinition Height="70" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="70" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout>
+                                    <Label HorizontalOptions="Center" Text="Coin Reward" />
+                                    <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+
+                                        <buttons:SfButton
+                                            BackgroundColor="{Binding IsCoinEntryEnabled, Converter={StaticResource ValueConverterGroup1}}"
+                                            BorderColor="{Binding IsCoinEntryEnabled, Converter={StaticResource ValueConverterGroup2}}"
+                                            BorderThickness="1,1,.5,1"
+                                            Command="{Binding AutoCoinRewardCommand}"
+                                            CornerRadius="10,0,0,10"
+                                            FlexLayout.Grow="1"
+                                            FontAttributes="bold"
+                                            FontSize="12"
+                                            Text="AUTO"
+                                            TextColor="{Binding IsCoinEntryEnabled, Converter={StaticResource ValueConverterGroup2}}" />
+
+                                        <buttons:SfButton
+                                            BackgroundColor="{Binding IsCoinEntryEnabled, Converter={StaticResource BoolToColorConverter5}}"
+                                            BorderColor="{Binding IsCoinEntryEnabled, Converter={StaticResource BoolToColorConverter4}}"
+                                            BorderThickness=".5,1,1,1"
+                                            Command="{Binding CustomCoinRewardCommand}"
+                                            CornerRadius="0,10,10,0"
+                                            FlexLayout.Grow="1"
+                                            FontAttributes="bold"
+                                            FontSize="12"
+                                            Text="CUSTOM"
+                                            TextColor="{Binding IsCoinEntryEnabled, Converter={StaticResource BoolToColorConverter4}}" />
+                                    </FlexLayout>
+                                </StackLayout>
+
+                                <StackLayout Grid.Column="1" HorizontalOptions="End">
+                                    <Label HorizontalOptions="Center" Text="Experience Reward" />
+                                    <FlexLayout Direction="Row" JustifyContent="SpaceEvenly">
+                                        <buttons:SfButton
+                                            BackgroundColor="{Binding IsExpEntryEnabled, Converter={StaticResource ValueConverterGroup1}}"
+                                            BorderColor="{Binding IsExpEntryEnabled, Converter={StaticResource ValueConverterGroup2}}"
+                                            BorderThickness="1,1,0.5,1"
+                                            Command="{Binding AutoExpRewardCommand}"
+                                            CornerRadius="10,0,0,10"
+                                            FlexLayout.Grow="1"
+                                            FontAttributes="bold"
+                                            FontSize="12"
+                                            Text="AUTO"
+                                            TextColor="{Binding IsExpEntryEnabled, Converter={StaticResource ValueConverterGroup2}}"
+                                            WidthRequest="68" />
+                                        <buttons:SfButton
+                                            Margin="0"
+                                            Padding="0"
+                                            BackgroundColor="{Binding IsExpEntryEnabled, Converter={StaticResource BoolToColorConverter5}}"
+                                            BorderColor="{Binding IsExpEntryEnabled, Converter={StaticResource BoolToColorConverter4}}"
+                                            BorderThickness=".5,1,1,1"
+                                            Command="{Binding CustomExpRewardCommand}"
+                                            CornerRadius="0,10,10,0"
+                                            FlexLayout.Grow="1"
+                                            FontAttributes="bold"
+                                            FontSize="12"
+                                            Text="CUSTOM"
+                                            TextColor="{Binding IsExpEntryEnabled, Converter={StaticResource BoolToColorConverter4}}"
+                                            WidthRequest="68" />
+                                    </FlexLayout>
+                                </StackLayout>
+
+                                <StackLayout Grid.Row="1">
+                                    <inputLayout:SfTextInputLayout
+                                        ContainerType="Outlined"
+                                        ErrorText="Invalid rewarrd"
+                                        FocusedColor="Blue"
+                                        HasError="False"
+                                        Hint="{Binding IsCoinEntryEnabled, Converter={StaticResource ValueConverterGroup3}}"
+                                        HorizontalOptions="FillAndExpand"
+                                        IsEnabled="{Binding IsCoinEntryEnabled}"
+                                        IsHintAlwaysFloated="FALSE"
+                                        LeadingViewPosition="Inside">
+                                        <Entry
+                                            Keyboard="Numeric"
+                                            MaxLength="6"
+                                            Text="{Binding Reward}"
+                                            TextColor="DarkOrange" />
+
+                                        <inputLayout:SfTextInputLayout.LeadingView>
+                                            <Image Source="coin.png" />
+                                        </inputLayout:SfTextInputLayout.LeadingView>
+                                    </inputLayout:SfTextInputLayout>
+                                </StackLayout>
+
+
+                                <StackLayout Grid.Row="1" Grid.Column="1">
+                                    <inputLayout:SfTextInputLayout
+                                        x:Name="expInputLayout"
+                                        ContainerType="Outlined"
+                                        ErrorText="Enter your reward"
+                                        FocusedColor="Blue"
+                                        HasError="False"
+                                        Hint="{Binding IsExpEntryEnabled, Converter={StaticResource ValueConverterGroup3}}"
+                                        HorizontalOptions="FillAndExpand"
+                                        IsEnabled="{Binding IsExpEntryEnabled}"
+                                        IsHintAlwaysFloated="FALSE"
+                                        LeadingViewPosition="Inside">
+                                        <Entry
+                                            Keyboard="Numeric"
+                                            MaxLength="6"
+                                            Text="{Binding ExpReward}"
+                                            TextColor="DarkOrange" />
+
+                                        <inputLayout:SfTextInputLayout.LeadingView>
+                                            <Image Source="coin.png" />
+                                        </inputLayout:SfTextInputLayout.LeadingView>
+                                    </inputLayout:SfTextInputLayout>
+
+                                </StackLayout>
+
+                                <Label
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0"
+                                    Padding="0"
+                                    Text="Related Attributes (1 - 3)" />
+                                <CollectionView
+                                    x:Name="ItemsListView"
+                                    Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    ItemsLayout="HorizontalList"
+                                    ItemsSource="{Binding Attributes, Source={StaticResource userDataVM}}">
+
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout
+                                                Margin="0"
+                                                Padding="0"
+                                                x:DataType="stat:AttributeItemViewModel">
+                                                <buttons:SfButton
+                                                    Margin="5,0,5,0"
+                                                    BackgroundColor="{Binding IsSelected, Converter={StaticResource BoolToColorConverter5}}"
+                                                    BorderColor="{Binding IsSelected, Converter={StaticResource BoolToColorConverter2}}"
+                                                    BorderThickness="2"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:NewTodoBaseViewModel}}, Path=StatSelectedCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    CornerRadius="100"
+                                                    HeightRequest="60"
+                                                    ImageAlignment="Top"
+                                                    ImageSource="{Binding Image}"
+                                                    ShowIcon="True"
+                                                    Text="{Binding Item.Name, Converter={StaticResource FirstCharactersConverter}}"
+                                                    TextColor="black"
+                                                    VerticalOptions="CenterAndExpand"
+                                                    WidthRequest="60" />
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                            </Grid>
+                        </StackLayout>
+
+
+                    </StackLayout>
+                </Frame>
+
+
+                <Frame Margin="10" CornerRadius="5">
+                    <StackLayout>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="Medium"
+                            Text="Time" />
+                        <StackLayout>
+                            <!--<inputLayout:SfTextInputLayout
+                                x:Name="nameLayout"
+                                ContainerType="Outlined"
+                                ErrorText="Enter a valid date"
+                                FocusedColor="Blue"
+                                HasError="False"
+                                Hint="Date"
+                                IsHintAlwaysFloated="FALSE">
+                                <custom:NullableDatePicker
+                                    Format="D"
+                                    NullableDate="{Binding DueDate}"
+                                    PlaceHolder="" />
+                                <inputLayout:SfTextInputLayout.TrailingView>
+                                    <StackLayout
+                                        Margin="0,8,110,0"
+                                        Padding="0"
+                                        HeightRequest="35"
+                                        HorizontalOptions="Center"
+                                        Orientation="Horizontal"
+                                        VerticalOptions="Center"
+                                        WidthRequest="80" />
+                                </inputLayout:SfTextInputLayout.TrailingView>
+                            </inputLayout:SfTextInputLayout>-->
+
+
+                            <!--  REMINDER  -->
+                            <TimePicker
+                                x:Name="myReminderTimePicker"
+                                IsVisible="False"
+                                Time="23:59" />
+                            <DatePicker
+                                x:Name="myReminderDatePicker"
+                                BackgroundColor="{StaticResource Primary}"
+                                IsVisible="False" />
+                            <inputLayout:SfTextInputLayout
+                                ContainerType="Outlined"
+                                ErrorText="Enter a valid date"
+                                FocusedColor="Blue"
+                                HasError="False"
+                                Hint="Date"
+                                IsHintAlwaysFloated="FALSE"
+                                LeadingViewPosition="Inside"
+                                OutlineCornerRadius="8">
+                                <custom:MyEntry
+                                    x:Name="myReminderEntry"
+                                    xct:TouchEffect.Command="{Binding ReminderEntryFocusCommand}"
+                                    xct:TouchEffect.CommandParameter="{x:Reference myReminderEntry}"
+                                    MyDatePicker="{x:Reference myReminderDatePicker}"
+                                    MyTimePicker="{x:Reference myReminderTimePicker}"
+                                    Text="{Binding ReminderEntryText, Mode=TwoWay}">
+                                    <!--<custom:MyEntry.Behaviors>
+                                        <xct:EventToCommandBehavior Command="{Binding EntryEventToCommand}" EventName="Focused" />
+                                    </custom:MyEntry.Behaviors>-->
+                                </custom:MyEntry>
+
+                                <inputLayout:SfTextInputLayout.LeadingView>
+                                    <Image
+                                        xct:IconTintColorEffect.TintColor="Gray"
+                                        HeightRequest="20"
+                                        HorizontalOptions="EndAndExpand"
+                                        Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Other.bell.png}" />
+                                </inputLayout:SfTextInputLayout.LeadingView>
+
+                                <inputLayout:SfTextInputLayout.TrailingView>
+                                    <Image
+                                        xct:IconTintColorEffect.TintColor="Gray"
+                                        xct:TouchEffect.Command="{Binding ClearReminderCommand}"
+                                        xct:TouchEffect.NativeAnimation="True"
+                                        HeightRequest="20"
+                                        HorizontalOptions="EndAndExpand"
+                                        IsVisible="{Binding ReminderDate, Converter={StaticResource IsNotNullOrEmptyConverter}}"
+                                        Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Other.cancel.png}" />
+
+                                </inputLayout:SfTextInputLayout.TrailingView>
+                            </inputLayout:SfTextInputLayout>
+
+                            <!--  DEADLINE  -->
+
+                            <TimePicker
+                                x:Name="myTimePicker"
+                                IsVisible="False"
+                                Time="23:59" />
+                            <DatePicker
+                                x:Name="myDatePicker"
+                                BackgroundColor="{StaticResource Primary}"
+                                IsVisible="False" />
+                            <inputLayout:SfTextInputLayout
+                                ContainerType="Outlined"
+                                ErrorText="Enter a valid date"
+                                FocusedColor="Blue"
+                                HasError="False"
+                                Hint="Date"
+                                IsHintAlwaysFloated="FALSE"
+                                LeadingViewPosition="Inside"
+                                OutlineCornerRadius="8">
+                                <custom:MyEntry
+                                    x:Name="myEntry"
+                                    xct:TouchEffect.Command="{Binding EntryFocusCommand}"
+                                    xct:TouchEffect.CommandParameter="{x:Reference myEntry}"
+                                    MyDatePicker="{x:Reference myDatePicker}"
+                                    MyTimePicker="{x:Reference myTimePicker}"
+                                    Text="{Binding DateEntryText, Mode=TwoWay}">
+                                    <!--<custom:MyEntry.Behaviors>
+                                        <xct:EventToCommandBehavior Command="{Binding EntryEventToCommand}" EventName="Focused" />
+                                    </custom:MyEntry.Behaviors>-->
+                                </custom:MyEntry>
+
+
+                                <inputLayout:SfTextInputLayout.LeadingView>
+
+                                    <Image
+                                        xct:IconTintColorEffect.TintColor="Gray"
+                                        HeightRequest="20"
+                                        HorizontalOptions="EndAndExpand"
+                                        Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Other.calendar.png}" />
+                                </inputLayout:SfTextInputLayout.LeadingView>
+                                <inputLayout:SfTextInputLayout.TrailingView>
+
+
+                                    <Image
+                                        xct:IconTintColorEffect.TintColor="Gray"
+                                        xct:TouchEffect.Command="{Binding ClearDateCommand}"
+                                        xct:TouchEffect.NativeAnimation="True"
+                                        HeightRequest="20"
+                                        HorizontalOptions="EndAndExpand"
+                                        IsVisible="{Binding DueDate, Converter={StaticResource IsNotNullOrEmptyConverter}}"
+                                        Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Other.cancel.png}" />
+
+                                </inputLayout:SfTextInputLayout.TrailingView>
+                            </inputLayout:SfTextInputLayout>
+
+
+                            <inputLayout:SfTextInputLayout
+                                ContainerType="Outlined"
+                                Hint="Day repeat frequency"
+                                LeadingViewPosition="Inside"
+                                OutlineCornerRadius="8">
+                                <Entry
+                                    Keyboard="Numeric"
+                                    MaxLength="3"
+                                    Text="{Binding SelectedRepeatFrequency, Mode=TwoWay}">
+                                    <Entry.Behaviors>
+                                        <xct:EventToCommandBehavior Command="{Binding RepeatCompletedCommand}" EventName="Completed" />
+
+                                    </Entry.Behaviors>
+
+
+                                </Entry>
+
+                                <inputLayout:SfTextInputLayout.LeadingView>
+
+                                    <Image
+                                        xct:IconTintColorEffect.TintColor="Gray"
+                                        HeightRequest="20"
+                                        HorizontalOptions="EndAndExpand"
+                                        Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Other.repeat.png}" />
+                                </inputLayout:SfTextInputLayout.LeadingView>
+                            </inputLayout:SfTextInputLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+
+
+                <StackLayout Orientation="Horizontal">
+                    <Button
+                        Margin="10"
+                        Padding="10"
+                        Command="{Binding CancelCommand}"
+                        CornerRadius="30"
+                        HeightRequest="40"
+                        HorizontalOptions="FillAndExpand"
+                        Text="CANCEL"
+                        TextColor="White">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="1,0">
+                                <GradientStop Offset="0" Color="{StaticResource Primary}" />
+                                <GradientStop Offset="1" Color="#51F1F2" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+
+                    <Button
+                        Margin="10"
+                        Padding="10"
+                        Command="{Binding SaveCommand}"
+                        CornerRadius="30"
+                        HeightRequest="40"
+                        HorizontalOptions="FillAndExpand"
+                        Text="SAVE"
+                        TextColor="White">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="1,0">
+                                <GradientStop Offset="0" Color="{StaticResource Primary}" />
+                                <GradientStop Offset="1" Color="#51F1F2" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </StackLayout>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentView.Content>
+
+</ContentView>

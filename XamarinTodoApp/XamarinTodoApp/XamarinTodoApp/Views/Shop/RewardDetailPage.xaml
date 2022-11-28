@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="XamarinTodoApp.Views.Shop.RewardDetailPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:XamarinTodoApp.ViewModels.Shop"
+    xmlns:shop="clr-namespace:XamarinTodoApp.Views.Shop"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    Title="Edit Reward"
+    BackgroundColor="whitesmoke">
+
+    <ContentPage.BindingContext>
+        <local:ShopDetailViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior Command="{Binding PageAppearingCommand}" EventName="Appearing" />
+    </ContentPage.Behaviors>
+    <ContentPage.Content>
+        <StackLayout Padding="15" Spacing="3">
+            <shop:NewRewardTemplate />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

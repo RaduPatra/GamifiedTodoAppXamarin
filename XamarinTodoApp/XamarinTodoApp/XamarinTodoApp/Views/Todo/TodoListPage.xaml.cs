@@ -24,18 +24,24 @@ namespace XamarinTodoApp.Views
             BindingContext = _viewModel = new TodoListViewModel();
         }
 
-        protected override async void OnAppearing()
+        /*protected override async void OnAppearing()
         {
             base.OnAppearing();
             await _viewModel.OnAppearing();
-        }
+        }*/
 
         protected override async void OnDisappearing()
         {
             base.OnDisappearing();
             await _viewModel.OnDisappearing();
         }
+        private void Handle_Tapped(object sender, System.EventArgs e)
+        {
 
+            var x = sender;
+            var y = e;
+
+        }
         /*private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             var check = (CheckBox)sender;

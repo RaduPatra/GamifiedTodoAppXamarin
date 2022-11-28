@@ -4,52 +4,166 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:contextview="clr-namespace:XamarinTodoApp.Views.General"
     xmlns:converters="clr-namespace:XamarinTodoApp.Converters"
+    xmlns:gradient="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms"
+    xmlns:ignore="http://www.galasoft.ch/ignore"
+    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
     xmlns:local="clr-namespace:XamarinTodoApp.ViewModels.Shop"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:XamarinTodoApp.Models"
     xmlns:popuplayout="clr-namespace:Syncfusion.XForms.PopupLayout;assembly=Syncfusion.SfPopupLayout.XForms"
     xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
     x:Name="ShopPage"
     Title="{Binding Title}"
-    x:DataType="local:RewardShopViewModel">
+    x:DataType="local:RewardShopViewModel"
+    BackgroundColor="WhiteSmoke"
+    Shell.NavBarIsVisible="{Binding ContextMenuVM.IsNavBarOn}"
+    mc:Ignorable="ignore">
 
-    <ContentPage.ToolbarItems>
+    <!--<ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding AddItemCommand}" Text="Add" />
-    </ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding TestCommand}" Text="test" />
+    </ContentPage.ToolbarItems>-->
 
-    <!--<ContentPage.BindingContext>
-        <local:RewardShopViewModel x:Name="viewModel"/>
-    </ContentPage.BindingContext>-->
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:MultiConverter x:Key="MultiConverter" />
+
+            <converters:BoolToColorConverter
+                x:Key="BoolToColorConverter"
+                DefaultColor="White"
+                SelectedColor="LightGray" />
+
             <popuplayout:SfPopupLayout
                 x:Key="addRewardDialog"
                 x:Name="addRewardPopup"
                 x:DataType="local:RewardItemViewModel">
                 <popuplayout:SfPopupLayout.PopupView>
                     <popuplayout:PopupView
+                        ignore:HeaderTitle="Buy Reward"
                         AutoSizeMode="Height"
+                        BackgroundColor="WhiteSmoke"
                         HeaderHeight="50"
-                        HeaderTitle="Buy Reward"
-                        ShowCloseButton="False">
+                        ShowCloseButton="False"
+                        ShowFooter="False"
+                        ShowHeader="False">
+                        <popuplayout:PopupView.PopupStyle>
+                            <popuplayout:PopupStyle CornerRadius="30" />
+                        </popuplayout:PopupView.PopupStyle>
                         <popuplayout:PopupView.ContentTemplate>
                             <DataTemplate>
-                                <StackLayout>
-                                    <Label Text="Reward Name" />
-                                    <Label Text="{Binding Item.Text}" />
+                                <StackLayout Padding="22">
+                                    <Image
+                                        HeightRequest="70"
+                                        Source="{Binding Image}"
+                                        WidthRequest="70" />
+                                    <!--<Label Text="Reward Name" />-->
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="20"
+                                        HorizontalOptions="Center"
+                                        Text="{Binding Item.Text}" />
 
-                                    <Label Text="Reward Price" />
-                                    <Label Text="{Binding Item.Price}" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        HorizontalOptions="Center"
+                                        LineBreakMode="TailTruncation"
+                                        MaxLines="3"
+                                        Text="{Binding Item.Description}" />
+
+
+                                    <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                                        <Image
+                                            HeightRequest="25"
+                                            Source="{xct:ImageResource XamarinTodoApp.Resources.Other.dollar.png}"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            Text="Price:" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            Text="{Binding Item.Price}"
+                                            TextColor="DarkOrange" />
+
+                                    </StackLayout>
+
 
                                     <!--<Entry Text="{Binding QuantityEntry, Source={RelativeSource AncestorType={x:Type local:RewardShopViewModel}}, Mode=TwoWay}" />-->
-                                    <Label Text="Enter a quantity" />
-                                    <Entry Text="{Binding BindingContext.QuantityEntry, Source={x:Reference ShopPage}, Mode=TwoWay}" />
-                                    <Button
-                                        Command="{Binding BindingContext.BuyItemTapped, Source={x:Reference ShopPage}, Mode=TwoWay}"
-                                        CommandParameter="{Binding .}"
-                                        Text="Buy" />
+                                    <!--<Label Text="Enter a quantity" />-->
+                                    <!--<Entry Text="{Binding BindingContext.QuantityEntry, Source={x:Reference ShopPage}, Mode=TwoWay}" />-->
+
+
+                                    <inputLayout:SfTextInputLayout
+                                        ContainerType="Outlined"
+                                        ErrorText="Quantity can't be empty"
+                                        FocusedColor="Blue"
+                                        HasError="{Binding BindingContext.HasQuantityError, Source={x:Reference ShopPage}}"
+                                        HelperText="Enter a quantity"
+                                        Hint="Quantity"
+                                        HorizontalOptions="FillAndExpand"
+                                        IsHintAlwaysFloated="FALSE"
+                                        LeadingViewPosition="Inside">
+                                        <Entry
+                                            Keyboard="Numeric"
+                                            MaxLength="6"
+                                            Text="{Binding BindingContext.QuantityEntry, Source={x:Reference ShopPage}, Mode=TwoWay}" />
+                                    </inputLayout:SfTextInputLayout>
+
+                                    <StackLayout
+                                        Margin="10"
+                                        HorizontalOptions="Center"
+                                        Orientation="Horizontal"
+                                        Spacing="40">
+
+                                        <!--<Button
+                                            Command="{Binding BindingContext.BuyItemTapped, Source={x:Reference ShopPage}, Mode=TwoWay}"
+                                            CommandParameter="{Binding .}"
+                                            HorizontalOptions="Center"
+                                            Text="Buy" />-->
+
+
+
+                                        <Button
+                                            Command="{Binding BindingContext.BuyItemTapped, Source={x:Reference ShopPage}, Mode=TwoWay}"
+                                            CommandParameter="{Binding .}"
+                                            CornerRadius="30"
+                                            HorizontalOptions="Center"
+                                            Text="Buy"
+                                            TextColor="White"
+                                            WidthRequest="100">
+                                            <Button.Background>
+                                                <LinearGradientBrush EndPoint="1,0">
+                                                    <GradientStop Offset="0" Color="{StaticResource Primary}" />
+                                                    <GradientStop Offset="1" Color="#51F1F2" />
+                                                </LinearGradientBrush>
+                                            </Button.Background>
+                                        </Button>
+
+
+
+                                        <Button
+                                            Command="{Binding BindingContext.CloseButtonCommand, Source={x:Reference ShopPage}, Mode=TwoWay}"
+                                            CornerRadius="30"
+                                            HorizontalOptions="Center"
+                                            Text="Close"
+                                            TextColor="White"
+                                            WidthRequest="100">
+                                            <Button.Background>
+                                                <LinearGradientBrush EndPoint="1,0">
+                                                    <GradientStop Offset="0" Color="FloralWhite" />
+                                                    <GradientStop Offset="1" Color="Gray" />
+                                                </LinearGradientBrush>
+                                            </Button.Background>
+                                        </Button>
+
+
+                                    </StackLayout>
+
                                 </StackLayout>
                             </DataTemplate>
                         </popuplayout:PopupView.ContentTemplate>
@@ -67,25 +181,57 @@
             Text="popuptest" />-->
 
 
-
-        <Label Text="Coins:" VerticalOptions="Center" />
-        <Label Text="{Binding Coins, Source={StaticResource userDataVM}, StringFormat='Coins: {0}'}" />
+        <!--<Label Text="{Binding Coins, Source={StaticResource userDataVM}, StringFormat='Coins: {0}'}" />-->
 
 
-        <RefreshView
-            x:DataType="local:RewardShopViewModel"
-            Command="{Binding LoadItemsCommand}"
-            IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <AbsoluteLayout>
 
-            <CollectionView
-                x:Name="RewardShopList"
-                Margin="10,0,10,0"
-                ItemsSource="{Binding Items}"
-                SelectionMode="None">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
-                </CollectionView.ItemsLayout>
-                <!--<CollectionView.Resources>
+
+            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+
+                <contextview:ContextMenuView x:Name="contextToolbar" />
+
+                <RefreshView
+                    x:DataType="local:RewardShopViewModel"
+                    Command="{Binding LoadItemsCommand}"
+                    IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+
+                    <CollectionView
+                        x:Name="RewardShopList"
+                        Margin="10,0,10,0"
+                        ItemsSource="{Binding Items}"
+                        SelectionMode="None">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.Header>
+
+                            <StackLayout Padding="0,10,0,0" Orientation="Horizontal">
+
+                                <!--<Frame ></Frame>-->
+                                <Image HeightRequest="25" Source="{xct:ImageResource XamarinTodoApp.Resources.Other.swords.png}" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="{Binding Level, Source={StaticResource userDataVM}, StringFormat='Level: {0}'}"
+                                    TextColor="{StaticResource Primary}" />
+
+                                <Image
+                                    HeightRequest="25"
+                                    HorizontalOptions="EndAndExpand"
+                                    Source="{xct:ImageResource XamarinTodoApp.Resources.Other.dollar.png}" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="{Binding Coins, Source={StaticResource userDataVM}}"
+                                    TextColor="DarkOrange" />
+
+
+                            </StackLayout>
+
+                        </CollectionView.Header>
+                        <!--<CollectionView.Resources>
 
                     <DataTemplate x:Key="popupData">
                         <StackLayout>
@@ -97,105 +243,197 @@
                     </DataTemplate>
                 </CollectionView.Resources>-->
 
-                <CollectionView.ItemTemplate>
+                        <CollectionView.ItemTemplate>
 
 
-                    <DataTemplate>
-                        <Frame
-                            Padding="1"
-                            x:DataType="local:RewardItemViewModel"
-                            CornerRadius="10"
-                            HasShadow="True">
-
-                            <!--<Frame.GestureRecognizers>
+                            <DataTemplate>
+                                <Frame
+                                    Margin="1"
+                                    Padding="1"
+                                    x:DataType="local:RewardItemViewModel"
+                                    xct:TouchEffect.Command="{Binding Source={RelativeSource AncestorType={x:Type local:RewardShopViewModel}}, Path=ItemTapped}"
+                                    xct:TouchEffect.CommandParameter="{Binding .}"
+                                    xct:TouchEffect.LongPressCommand="{Binding Source={RelativeSource AncestorType={x:Type local:RewardShopViewModel}}, Path=ContextMenuVM.LongPressCommand}"
+                                    xct:TouchEffect.LongPressDuration="1000"
+                                    xct:TouchEffect.NativeAnimation="True"
+                                    xct:TouchEffect.ShouldMakeChildrenInputTransparent="False"
+                                    BackgroundColor="{Binding IsSelected, Converter={StaticResource BoolToColorConverter}}"
+                                    CornerRadius="20">
+                                    <xct:TouchEffect.LongPressCommandParameter>
+                                        <MultiBinding Converter="{StaticResource MultiConverter}">
+                                            <Binding Source="{x:Reference contextToolbar}" />
+                                            <Binding Path="." />
+                                        </MultiBinding>
+                                    </xct:TouchEffect.LongPressCommandParameter>
+                                    <!--<Frame.GestureRecognizers>
                                 <TapGestureRecognizer
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type local:TodoListViewModel}}, Path=ItemTapped}"
                                     CommandParameter="{Binding .}"
                                     NumberOfTapsRequired="1" />
                             </Frame.GestureRecognizers>-->
-                            <Grid
-                                Margin="5,5,5,5"
-                                Padding="0"
-                                RowSpacing="1">
+                                    <Grid
+                                        Margin="5,5,5,5"
+                                        Padding="0"
+                                        RowSpacing="1">
 
 
-                                <Grid.RowDefinitions Height="20">
-                                    <RowDefinition Height="40" />
-                                    <RowDefinition Height="30" />
-                                </Grid.RowDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="70" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="60" />
-                                </Grid.ColumnDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="70" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
 
-                                <!--  changable icon  -->
-                                <Image
-                                    Grid.Row="0"
-                                    Grid.RowSpan="2"
-                                    HeightRequest="100"
-                                    HorizontalOptions="Center"
-                                    Source="{Binding Image}"
-                                    VerticalOptions="Center"
-                                    WidthRequest="100" />
+                                        <!--  changable icon  -->
+                                        <Image
+                                            Grid.Row="0"
+                                            Grid.RowSpan="2"
+                                            HeightRequest="60"
+                                            HorizontalOptions="Center"
+                                            Source="{Binding Image}"
+                                            VerticalOptions="Center"
+                                            WidthRequest="60" />
 
-                                <!--  reward title  -->
-                                <Label
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    Padding="10,10,10,10"
-                                    FontSize="18"
-                                    Text="{Binding Item.Text}"
-                                    VerticalOptions="Center" />
+                                        <!--  reward title  -->
 
-                                <!--  reward desc  -->
-                                <Label
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    Padding="10,5,5,5"
-                                    FontSize="14"
-                                    Text="Reward Desc"
-                                    VerticalOptions="Center" />
+                                        <!--<BoxView
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Color="red" />-->
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Padding="0"
+                                            FontSize="16"
+                                            LineBreakMode="TailTruncation"
+                                            MaxLines="2"
+                                            Text="{Binding Item.Text}"
+                                            VerticalOptions="Center" />
 
-                                <!--  buy button  -->
-                                <buttons:SfButton
+                                        <!--  reward desc  -->
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Padding="5"
+                                            FontSize="11"
+                                            LineBreakMode="TailTruncation"
+                                            MaxLines="3"
+                                            Text="{Binding Item.Description}"
+                                            VerticalOptions="Center" />
+
+                                        <!--  buy button  -->
+                                        <!--<BoxView
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
                                     Grid.Column="2"
-                                    BackgroundColor="AntiqueWhite"
-                                    BorderColor="Black"
-                                    BorderWidth="2"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:RewardShopViewModel}}, Path=OpenPopupCommand}"
-                                    CornerRadius="5"
-                                    FontAttributes="Bold"
-                                    FontSize="16"
-                                    HorizontalOptions="Center"
-                                    ImageAlignment="Top"
-                                    ImageSource="coin.png"
-                                    ImageWidth="30"
-                                    ShowIcon="True"
-                                    Text="{Binding Item.Price}"
-                                    TextColor="Black"
-                                    WidthRequest="60">
+                                    Color="green" />-->
+                                        <buttons:SfButton
+                                            Grid.Row="0"
+                                            Grid.RowSpan="2"
+                                            Grid.Column="2"
+                                            Margin="0"
+                                            Padding="0"
+                                            BackgroundColor="#DA4A73"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:RewardShopViewModel}}, Path=OpenPopupCommand}"
+                                            CornerRadius="50"
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            HeightRequest="65"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                            WidthRequest="65">
 
-                                    <buttons:SfButton.CommandParameter>
-                                        <MultiBinding Converter="{StaticResource MultiConverter}">
-                                            <!--<Binding Source="{x:Reference addRewardPopup}" />-->
-                                            <Binding Source="{StaticResource addRewardDialog}" />
-                                            <Binding Path="." />
-                                        </MultiBinding>
-                                    </buttons:SfButton.CommandParameter>
-
-                                </buttons:SfButton>
+                                            <buttons:SfButton.CommandParameter>
 
 
-                            </Grid>
-                        </Frame>
+                                                <MultiBinding Converter="{StaticResource MultiConverter}">
 
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </RefreshView>
+                                                    <Binding Source="{x:Reference addRewardPopup}" />
+
+                                                    <!--<Binding Source="{StaticResource addRewardDialog}" />-->
+                                                    <Binding Path="." />
+                                                </MultiBinding>
+                                            </buttons:SfButton.CommandParameter>
+
+                                            <buttons:SfButton.Content>
+                                                <StackLayout
+                                                    Margin="0"
+                                                    HeightRequest="70"
+                                                    HorizontalOptions="Center"
+                                                    Spacing="2"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="70">
+
+                                                    <Label
+                                                        Margin="0,5,0,0"
+                                                        FontAttributes="Bold"
+                                                        FontSize="18"
+                                                        HorizontalOptions="Center"
+                                                        Text="Buy"
+                                                        TextColor="White" />
+                                                    <StackLayout Margin="10,0,0,0" Orientation="Horizontal">
+                                                        <Image HeightRequest="16" Source="{xct:ImageResource XamarinTodoApp.Resources.Other.dollar.png}" />
+
+                                                        <Label
+                                                            FontAttributes="Bold"
+                                                            Text="{Binding Item.Price}"
+                                                            TextColor="White" />
+                                                    </StackLayout>
+                                                    <StackLayout.Background>
+                                                        <LinearGradientBrush EndPoint="1,0">
+                                                            <GradientStop Offset="0" Color="#DA4A73" />
+                                                            <GradientStop Offset="1" Color="#DB2A42" />
+
+
+                                                        </LinearGradientBrush>
+
+                                                    </StackLayout.Background>
+                                                </StackLayout>
+
+
+                                            </buttons:SfButton.Content>
+
+
+
+                                        </buttons:SfButton>
+
+
+
+
+                                    </Grid>
+                                </Frame>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
+            </StackLayout>
+
+
+            <buttons:SfButton
+                AbsoluteLayout.LayoutBounds=".98,.98,-1,1"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                BackgroundColor="{StaticResource Primary}"
+                Command="{Binding AddItemCommand}"
+                CornerRadius="100"
+                HasShadow="false"
+                HeightRequest="60"
+                HorizontalOptions="Center"
+                ImageWidth="50"
+                ShadowColor="black"
+                ShowIcon="True"
+                VerticalOptions="Center"
+                WidthRequest="60">
+                <buttons:SfButton.Image>
+                    <Image xct:IconTintColorEffect.TintColor="White" Source="{xct:ImageResource Id=XamarinTodoApp.Resources.Other.plus2.png}" />
+                </buttons:SfButton.Image>
+            </buttons:SfButton>
+
+        </AbsoluteLayout>
     </StackLayout>
+
 </ContentPage>

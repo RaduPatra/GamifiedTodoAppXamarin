@@ -1,49 +1,53 @@
-﻿using System;
+﻿using Syncfusion.XForms.PopupLayout;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using XamarinTodoApp.Models;
-using XamarinTodoApp.Services;
-using XamarinTodoApp.ViewModels.Todo;
+
 //using XamarinTodoApp.Views;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
-using XamarinTodoApp.Views.Todo;
-using Google.Cloud.Firestore;
-using System.Collections.Generic;
-using System.Linq;
-using XamarinTodoApp.Views.Shop;
-using Syncfusion.XForms.PopupLayout;
-using System.Reflection;
 using XamarinTodoApp.Helpers;
+using XamarinTodoApp.Models;
 using XamarinTodoApp.Resources;
+using XamarinTodoApp.Services;
+using XamarinTodoApp.Services.Interfaces;
+using XamarinTodoApp.ViewModels.General;
+using XamarinTodoApp.Views.Shop;
 
 namespace XamarinTodoApp.ViewModels.Shop
 {
-    public class RewardShopViewModel : ViewModelBase
+    public class RewardShopViewModel : ViewModelBase, IContextMenu<RewardItemViewModel>
     {
         //private Item _selectedItem;
         private string coins;
+
         private string testval;
         private string quantityEntry;
         private SfPopupLayout currentPopup;
         public UserData UserData { get; set; }
-      
-
 
         public ObservableCollection<RewardItemViewModel> Items { get; set; }
         public Command LoadItemsCommand { get; }
+        public Command CloseButtonCommand { get; }
         public Command AddItemCommand { get; }
         public Command<RewardItemViewModel> BuyItemTapped { get; }
         public Command<object> OpenPopupCommand { get; set; }
+        public AsyncCommand<RewardItemViewModel> DeleteItemCommand { get; }
 
         public Command<SfPopupLayout> PopupTestCommand { get; set; }
-
-        
-
+        private Command<RewardItemViewModel> itemTapped;
+        public Command<RewardItemViewModel> ItemTapped { get => itemTapped; set => SetProperty(ref itemTapped, value); }
 
         public Command TestCommand { get; }
+        private ContextMenuViewModel<RewardItemViewModel> contextMenuVM;
+
+        public ContextMenuViewModel<RewardItemViewModel> ContextMenuVM
+        {
+            get => contextMenuVM;
+            set => SetProperty(ref contextMenuVM, value);
+        }
 
         public RewardShopViewModel()
         {
@@ -59,20 +63,32 @@ namespace XamarinTodoApp.ViewModels.Shop
             AddItemCommand = new Command(OnAddItem);
 
             TestCommand = new Command(TestCom);
+            CloseButtonCommand = new Command(OnClose);
 
             OpenPopupCommand = new Command<object>(OnOpenPopup);
 
             PopupTestCommand = new Command<SfPopupLayout>(OnTestPopup);
 
-        }
-        void TestCom() { return; }
+            ItemTapped = new Command<RewardItemViewModel>(OnItemSelected);
+            DeleteItemCommand = new AsyncCommand<RewardItemViewModel>(DeleteItem);
 
-        void OnTestPopup(SfPopupLayout popup)
+            ContextMenuVM = new ContextMenuViewModel<RewardItemViewModel>(value => ItemTapped = value, DeleteItem, OnItemSelected);
+        }
+
+        private void TestCom()
+        { return; }
+
+        private void OnTestPopup(SfPopupLayout popup)
         {
             popup.Show();
         }
 
-        void OnOpenPopup(object parameter)
+        private void OnClose()
+        {
+            CloseCurrentPopup();
+        }
+
+        private void OnOpenPopup(object parameter)
         {
             var values = (object[])parameter;
             var popupLayout = values[0] as SfPopupLayout;
@@ -83,16 +99,20 @@ namespace XamarinTodoApp.ViewModels.Shop
             QuantityEntry = "1";
             popupLayout.Show();
         }
-        
-        async Task ExecuteLoadItemsCommand()
+
+        private async Task ExecuteLoadItemsCommand()
         {
             IsBusy = true;
 
             try
             {
                 Items.Clear();
-                var items = await RewardStore.GetItemsAsync(true);
-                var RewardItemVMs = items.Select(x => new RewardItemViewModel(x));
+                //var items = await RewardStore.GetItemsAsync(true);
+
+                var myItems = await RewardStore.GetItemsAsync(true);
+                //var myItems = items.Where(item => item.CreatedBy.Id == AuthService.UserInfo.LocalId);
+
+                var RewardItemVMs = myItems.Select(x => new RewardItemViewModel(x));
 
                 foreach (var item in RewardItemVMs)
                 {
@@ -108,9 +128,28 @@ namespace XamarinTodoApp.ViewModels.Shop
                 IsBusy = false;
             }
         }
+
+        private async Task DeleteItem(RewardItemViewModel itemVM)
+        {
+            Console.WriteLine("delete called");
+
+            try
+            {
+                await RewardStore.DeleteItemAsync(itemVM.Item.Id);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+            }
+        }
+
         public async Task<UserData> GetUserDataAsync()
         {
-            UserData data = await UserDataStore.GetItemAsync(tempId);
+            //UserData data = await UserDataStore.GetItemAsync(tempId);
+            UserData data = await UserDataStore.GetItemAsync(AuthService.UserInfo.LocalId);
             return data;
         }
 
@@ -122,6 +161,7 @@ namespace XamarinTodoApp.ViewModels.Shop
                 ApplicationCache.UserData = await GetUserDataAsync();
             }
             UserData = ApplicationCache.UserData;
+            ContextMenuVM.OnAppearing();
             //Coins = UserData.Coins.ToString();
             //SelectedItem = null;
         }
@@ -140,10 +180,24 @@ namespace XamarinTodoApp.ViewModels.Shop
             set => SetProperty(ref testval, value);
         }
 
+        private bool hasQuantityError;
+
+        public bool HasQuantityError
+        {
+            get => hasQuantityError;
+            set => SetProperty(ref hasQuantityError, value);
+        }
+
         public string QuantityEntry
         {
             get => quantityEntry;
-            set => SetProperty(ref quantityEntry, value);
+            set
+            {
+                HasQuantityError = false;
+                string cleanString = Helpers.Helpers.RemoveInvalidNumberInput(value);
+                quantityEntry = quantityEntry + "x";
+                SetProperty(ref quantityEntry, cleanString);
+            }
         }
 
         /* public RewardItem SelectedItem
@@ -161,10 +215,15 @@ namespace XamarinTodoApp.ViewModels.Shop
             await Shell.Current.GoToAsync(nameof(NewRewardPage));
         }
 
-
-        async void OnItemBuySelected(RewardItemViewModel item)
+        private async void OnItemBuySelected(RewardItemViewModel item)
         {
             Console.WriteLine(item.Item.Text);
+            
+            if (QuantityEntry =="0"|| string.IsNullOrEmpty(QuantityEntry))
+            {
+                HasQuantityError = true;
+                return;
+            }
             var quantity = int.Parse(QuantityEntry);
             var price = item.Item.Price * quantity;
             if (UserData.Coins - price >= 0)
@@ -187,7 +246,8 @@ namespace XamarinTodoApp.ViewModels.Shop
                 {
                     Console.WriteLine("UPDATE INV ITEM");
                     inventoryItem.Quantity += quantity;
-                    await InventoryStore.UpdateItemAsync(inventoryItem.Id, inventoryItem);
+                    //await InventoryStore.UpdateItemAsync(inventoryItem.Id, inventoryItem);
+                    await InventoryStore.UpdateInventoryItemAsync(inventoryItem, inventoryItem.Id, AuthService.UserInfo.LocalId);
                 }
                 else
                 {
@@ -206,8 +266,8 @@ namespace XamarinTodoApp.ViewModels.Shop
                         Quantity = quantity
                     };
 
-                    await InventoryStore.UpdateItemAsync(newInventoryItem.Id, newInventoryItem);
-
+                    //await InventoryStore.UpdateItemAsync(newInventoryItem.Id, newInventoryItem);
+                    await InventoryStore.UpdateInventoryItemAsync(newInventoryItem, newInventoryItem.Id, AuthService.UserInfo.LocalId);
                 }
             }
             else
@@ -217,19 +277,20 @@ namespace XamarinTodoApp.ViewModels.Shop
             }
         }
 
-        void RefreshUserData(UserData userData)
+        private void RefreshUserData(UserData userData)
         {
             ApplicationCache.UserData = userData;
             UserData = userData;
         }
-        /*async void OnItemSelected(Item item)
+
+        private async void OnItemSelected(RewardItemViewModel itemVM)
         {
-            if (item == null)
+            if (itemVM == null)
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            Console.WriteLine("item selected " + item.Id);
-            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.Id}");
-        }*/
+            Console.WriteLine("item selected " + itemVM.Item.Id);
+            await Shell.Current.GoToAsync($"{nameof(RewardDetailPage)}?{nameof(ShopDetailViewModel.ItemId)}={itemVM.Item.Id}");
+        }
     }
 }

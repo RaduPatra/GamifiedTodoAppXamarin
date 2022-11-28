@@ -50,8 +50,12 @@ namespace XamarinTodoApp.ViewModels.Shop
             try
             {
                 Items.Clear();
-                var items = await InventoryStore.GetItemsAsync(true);
-                var InvItemVMs = items.Select(x => new InventoryItemViewModel(x));
+                //var items = await InventoryStore.GetItemsAsync(true);
+
+                var myItems = await InventoryStore.GetItemsAsync(true);
+                //var myItems = items.Where(item => item.CreatedBy.Id == AuthService.UserInfo.LocalId);
+
+                var InvItemVMs = myItems.Select(x => new InventoryItemViewModel(x));
 
                 foreach (var item in InvItemVMs)
                 {
@@ -69,7 +73,8 @@ namespace XamarinTodoApp.ViewModels.Shop
         }
         public async Task<UserData> GetUserDataAsync()
         {
-            UserData data = await UserDataStore.GetItemAsync(tempId);
+            //UserData data = await UserDataStore.GetItemAsync(tempId);
+            UserData data = await UserDataStore.GetItemAsync(AuthService.UserInfo.LocalId);
             return data;
         }
 

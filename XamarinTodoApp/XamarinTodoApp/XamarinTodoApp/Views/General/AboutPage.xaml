@@ -3,7 +3,11 @@
     x:Class="XamarinTodoApp.Views.AboutPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:XamarinTodoApp.CustomControls"
+    xmlns:custom="clr-namespace:XamarinTodoApp.CustomControls"
+    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
     xmlns:vm="clr-namespace:XamarinTodoApp.ViewModels"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
     Title="{Binding Title}">
 
     <ContentPage.BindingContext>
@@ -16,7 +20,17 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid>
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior Command="{Binding PageAppearingCommand}" EventName="Appearing" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding TestCommand}" Text="Test" />
+        <ToolbarItem Command="{Binding TestCommand2}" Text="Test2" />
+    </ContentPage.ToolbarItems>
+
+    <!--<Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -65,6 +79,123 @@
                     TextColor="White" />
             </StackLayout>
         </ScrollView>
-    </Grid>
+    </Grid>-->
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+
+            <controls:FilterImage
+                x:Name="filterImage"
+                DownsampleToViewSize="true"
+                HeightRequest="200"
+                OriginalSource="coin.png"
+                SelectFilterCommand="{Binding SelectFilterCommand}"
+                Source="coin.png"
+                WidthRequest="200" />
+
+
+
+
+
+
+            <!--<StackLayout>
+                <DatePicker
+                    x:Name="cDatePicker"
+                    DateSelected="cDatePicker_DateSelected"
+                    Focused="cDatePicker_Focused"
+                    TextColor="red"
+                    Unfocused="cDatePicker_Unfocused" />
+
+                <inputLayout:SfTextInputLayout
+                    ContainerType="Outlined"
+                    ErrorText="Enter a valid date"
+                    FocusedColor="Blue"
+                    HasError="False"
+                    Hint="Name"
+                    IsHintAlwaysFloated="FALSE"
+                    OutlineCornerRadius="8">
+                    <custom:MyEntry
+                        x:Name="cDateEntry"
+                        Focused="cDateEntry_Focused"
+                        TextColor="green" />
+                </inputLayout:SfTextInputLayout>
+
+                <Button x:Name="cClearDateButton" Clicked="cClearDateButton_Clicked" />
+            </StackLayout>-->
+
+            <!--<Label Text="TEST222" />
+            <inputLayout:SfTextInputLayout
+                ContainerType="Outlined"
+
+                Hint="Name"
+                OutlineCornerRadius="8">
+                <custom:DateTimePicker/>
+            </inputLayout:SfTextInputLayout>-->
+
+            <TimePicker
+                x:Name="myTimePicker"
+                IsVisible="False"
+                Time="23:59" />
+            <DatePicker x:Name="myDatePicker" IsVisible="False" />
+
+
+            <inputLayout:SfTextInputLayout
+                ContainerType="Outlined"
+                Hint="Name"
+                OutlineCornerRadius="8">
+            <custom:MyEntry
+                x:Name="myEntry"
+                MyDatePicker="{x:Reference myDatePicker}"
+                MyTimePicker="{x:Reference myTimePicker}"
+                xct:TouchEffect.Command="{Binding EntryFocusCommand}"
+                xct:TouchEffect.CommandParameter="{x:Reference myEntry}">
+
+                <custom:MyEntry.Behaviors>
+                        <xct:EventToCommandBehavior Command="{Binding EntryEventToCommand}" EventName="Focused" />
+                    </custom:MyEntry.Behaviors>
+
+                <!--<custom:MyEntry.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding EntryFocusCommand}"
+                        CommandParameter="{x:Reference myEntry}"
+                        NumberOfTapsRequired="1" />
+
+                </custom:MyEntry.GestureRecognizers>-->
+            </custom:MyEntry>
+            </inputLayout:SfTextInputLayout>
+
+
+            <!--<custom:MyEntry MyDatePicker="{x:Reference myDatePicker}" MyTimePicker="{x:Reference myTimePicker}">
+                <custom:MyEntry.Behaviors>
+                    <xct:EventToCommandBehavior Command="{Binding EntryFocusCommand}" EventName="Focused" />
+                </custom:MyEntry.Behaviors>
+
+
+            </custom:MyEntry>-->
+
+
+        </StackLayout>
+    </ContentPage.Content>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </ContentPage>

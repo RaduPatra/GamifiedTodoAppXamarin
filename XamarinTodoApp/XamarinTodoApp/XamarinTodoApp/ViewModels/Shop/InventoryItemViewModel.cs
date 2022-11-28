@@ -5,10 +5,11 @@ using System.Reflection;
 using System.Text;
 using Xamarin.Forms;
 using XamarinTodoApp.Models;
+using XamarinTodoApp.Services.Interfaces;
 
 namespace XamarinTodoApp.ViewModels.Shop
 {
-    public class InventoryItemViewModel : ObservableObject
+    public class InventoryItemViewModel : ObservableObject, IListItem
     {
         private string quantity;
         private RewardItemViewModel rewardItemVM;
@@ -34,5 +35,12 @@ namespace XamarinTodoApp.ViewModels.Shop
 
 
         public InventoryItem Item { get; set; }
+
+        private bool isSelected;
+        public bool IsSelected
+        {
+            get => isSelected;
+            set => SetProperty(ref isSelected, value);
+        }
     }
 }
