@@ -2,6 +2,4 @@
 
 A gamified todo app inspired by Life Up and Habitica, made in Xamarin with Syncfusion and Google Firestore.
 
-## Screenshots:
-
-to be added
+Application demo: https://www.youtube.com/watch?v=Hy-zELW6zyU
